@@ -1,0 +1,2 @@
+import CrudPage from "../../../shared/components/CrudPage";
+export default function AbsenceTypes(){return <CrudPage title="Absence Types" description="Configure reasons such as Sick Leave, On Duty and Personal Leave. These are selected when staff mark a student absent." endpoint="/absence-types" fields={[{name:"name",label:"Name"},{name:"code",label:"Code"}]} columns={[{key:"name",label:"Name"},{key:"code",label:"Code"},{key:"isActive",label:"Active",render:r=>r.isActive?"Yes":"No"}]} createLabel="Absence type"/>}
