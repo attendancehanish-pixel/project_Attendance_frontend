@@ -30,7 +30,7 @@ import AttendanceAdjustment from "./features/attendance/pages/AttendanceAdjustme
 
 import Timetable from "./features/timetable/pages/Timetable";
 import TimetableSettings from "./features/timetable/pages/TimetableSettings";
-import StaffTimetable from "./features/timetable/pages/StaffTImetable";
+import StaffTimetable from "./features/timetable/pages/StaffTimetable";
 
 import Staff from "./features/staff/pages/Staff";
 import Assignments from "./features/assignments/pages/Assignments";
