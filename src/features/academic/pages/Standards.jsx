@@ -369,7 +369,7 @@ export default function Standards() {
                   fontSize: '13px', 
                   fontWeight: '600', 
                   marginBottom: '12px',
-                  color: '#0e7b4c',
+                  color: 'var(--ui-ok-text)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.6px'
                 }}>
@@ -388,12 +388,12 @@ export default function Standards() {
                         alignItems: 'center',
                         gap: '6px',
                         padding: '6px 14px',
-                        backgroundColor: '#e8f5e9',
-                        color: '#0e7b4c',
+                        backgroundColor: 'var(--ui-ok-bg)',
+                        color: 'var(--ui-ok-text)',
                         borderRadius: '20px',
                         fontSize: '13px',
                         fontWeight: '500',
-                        border: '1px solid #c8e6c9'
+                        border: '1px solid var(--ui-ok-line)'
                       }}
                     >
                       {allocation.subject.name}
@@ -403,7 +403,7 @@ export default function Standards() {
                         style={{
                           background: 'none',
                           border: 'none',
-                          color: '#0e7b4c',
+                          color: 'var(--ui-ok-text)',
                           cursor: 'pointer',
                           fontSize: '18px',
                           lineHeight: 1,
@@ -426,7 +426,7 @@ export default function Standards() {
                 fontSize: '13px', 
                 fontWeight: '600', 
                 marginBottom: '16px',
-                color: '#1e1e1e',
+                color: 'var(--ui-ink)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.6px'
               }}>
@@ -437,12 +437,12 @@ export default function Standards() {
                 <div style={{ 
                   textAlign: 'center', 
                   padding: '48px 24px',
-                  color: '#98a2b3',
-                  backgroundColor: '#f8fafc',
+                  color: 'var(--ui-faint)',
+                  backgroundColor: 'var(--ui-surface-2)',
                   borderRadius: '12px',
-                  border: '1px dashed #e4e7ec'
+                  border: '1px dashed var(--ui-line-2)'
                 }}>
-                  <p style={{ fontSize: '15px', margin: '0 0 4px', fontWeight: 500, color: '#667085' }}>
+                  <p style={{ fontSize: '15px', margin: '0 0 4px', fontWeight: 500, color: 'var(--ui-muted)' }}>
                     All subjects assigned
                   </p>
                   <p style={{ fontSize: '13px', margin: 0 }}>
@@ -467,8 +467,8 @@ export default function Standards() {
                         style={{
                           padding: '16px',
                           borderRadius: '10px',
-                          border: isSelected ? '2px solid #0e7b4c' : '1px solid #e4e7ec',
-                          backgroundColor: isSelected ? '#e8f5e9' : '#ffffff',
+                          border: isSelected ? '2px solid var(--ui-ok-text)' : '1px solid var(--ui-line-2)',
+                          backgroundColor: isSelected ? 'var(--ui-ok-bg)' : 'var(--ui-surface)',
                           cursor: saving ? 'not-allowed' : 'pointer',
                           transition: 'all 0.15s ease',
                           position: 'relative',
@@ -476,13 +476,13 @@ export default function Standards() {
                         }}
                         onMouseEnter={(e) => {
                           if (!isSelected && !saving) {
-                            e.currentTarget.style.borderColor = '#0e7b4c';
+                            e.currentTarget.style.borderColor = 'var(--ui-ok-text)';
                             e.currentTarget.style.boxShadow = '0 2px 8px rgba(14, 123, 76, 0.08)';
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!isSelected && !saving) {
-                            e.currentTarget.style.borderColor = '#e4e7ec';
+                            e.currentTarget.style.borderColor = 'var(--ui-line-2)';
                             e.currentTarget.style.boxShadow = 'none';
                           }
                         }}
@@ -492,8 +492,8 @@ export default function Standards() {
                             width: '20px',
                             height: '20px',
                             borderRadius: '5px',
-                            border: isSelected ? '2px solid #0e7b4c' : '2px solid #d0d5dd',
-                            backgroundColor: isSelected ? '#0e7b4c' : 'transparent',
+                            border: isSelected ? '2px solid var(--ui-ok-text)' : '2px solid var(--ui-line-strong)',
+                            backgroundColor: isSelected ? 'var(--ui-ok-text)' : 'transparent',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -511,7 +511,7 @@ export default function Standards() {
                             <div style={{ 
                               fontWeight: '600', 
                               fontSize: '14px',
-                              color: '#1e1e1e',
+                              color: 'var(--ui-ink)',
                               marginBottom: '4px',
                               lineHeight: 1.3
                             }}>
@@ -519,7 +519,7 @@ export default function Standards() {
                             </div>
                             <div style={{ 
                               fontSize: '12px', 
-                              color: '#667085',
+                              color: 'var(--ui-muted)',
                               display: 'flex',
                               gap: '8px',
                               flexWrap: 'wrap',
@@ -544,11 +544,11 @@ export default function Standards() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '20px 0 8px',
-                borderTop: '1px solid #e4e7ec',
+                borderTop: '1px solid var(--ui-line-2)',
                 marginTop: '16px'
               }}>
-                <span style={{ fontSize: '14px', color: '#667085' }}>
-                  <strong style={{ color: '#1e1e1e' }}>{selectedSubjects.length}</strong> subject{selectedSubjects.length !== 1 ? 's' : ''} selected
+                <span style={{ fontSize: '14px', color: 'var(--ui-muted)' }}>
+                  <strong style={{ color: 'var(--ui-ink)' }}>{selectedSubjects.length}</strong> subject{selectedSubjects.length !== 1 ? 's' : ''} selected
                 </span>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <button

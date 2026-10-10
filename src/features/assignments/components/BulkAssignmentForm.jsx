@@ -228,7 +228,7 @@ export default function BulkAssignmentForm({
       )}
 
       <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', marginTop: '10px' }}>
-        <span style={{ fontSize: '12px', color: '#667085', marginRight: 'auto' }}>
+        <span style={{ fontSize: '12px', color: 'var(--ui-muted)', marginRight: 'auto' }}>
           {assignments.length} assignment{assignments.length !== 1 ? 's' : ''} in list
         </span>
         <button type="button" className="button" onClick={onCancel}>

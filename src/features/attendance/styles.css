@@ -1,14 +1,14 @@
 
 /* Append this file's rules to src/styles.css, or import it from main.jsx. */
 .weekday-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.check-card{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:9px;padding:10px;border:1px solid #e4e7ec;border-radius:8px;background:#fff}
+.check-card{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:9px;padding:10px;border:1px solid var(--ui-line-2);border-radius:8px;background:var(--ui-surface)}
 .check-card input{width:auto;margin-top:2px}
 .check-card span{display:grid;gap:3px;font-weight:650}
-.check-card small,.switch-row small{font-size:10px;color:#98a2b3;font-weight:400;line-height:1.5}
+.check-card small,.switch-row small{font-size:10px;color:var(--ui-faint);font-weight:400;line-height:1.5}
 .settings-section{display:grid;gap:8px}
-.settings-title{font-size:12px;font-weight:750;color:#344054}
+.settings-title{font-size:12px;font-weight:750;color:var(--ui-ink-2)}
 .split-toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px}
-.calendar-rule{font-size:11px;color:#667085}
+.calendar-rule{font-size:11px;color:var(--ui-muted)}
 .timetable-toolbar{display:flex;gap:12px;flex-wrap:wrap}
 .timetable-settings-card,.settings-card{display:flex;justify-content:space-between;gap:30px;align-items:center;margin-bottom:15px}
 .switch-row{display:flex!important;align-items:flex-start;gap:10px;min-width:320px}
@@ -18,28 +18,28 @@
 .switch-row.large strong{font-size:13px}
 .table-headline{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}
 .table-headline h3{margin:2px 0 0}
-.timetable-grid{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));border-top:1px solid #eef1f5;border-left:1px solid #eef1f5;overflow:auto}
-.day-column{min-height:240px;border-right:1px solid #eef1f5;border-bottom:1px solid #eef1f5;background:#fff}
-.weekly-holiday-column{background:#fbfcfe}
-.day-header{padding:11px;border-bottom:1px solid #eef1f5;display:grid;gap:5px}
+.timetable-grid{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));border-top:1px solid var(--ui-line-soft);border-left:1px solid var(--ui-line-soft);overflow:auto}
+.day-column{min-height:240px;border-right:1px solid var(--ui-line-soft);border-bottom:1px solid var(--ui-line-soft);background:var(--ui-surface)}
+.weekly-holiday-column{background:var(--ui-surface-3)}
+.day-header{padding:11px;border-bottom:1px solid var(--ui-line-soft);display:grid;gap:5px}
 .day-header strong{font-size:11px}
 .day-header .status-badge{width:max-content}
-.day-empty{padding:20px 11px;color:#98a2b3;font-size:10px}
-.period-card{margin:8px;padding:9px;border:1px solid #e4e7ec;border-radius:8px;background:#fff;display:grid;grid-template-columns:26px 1fr;gap:6px}
+.day-empty{padding:20px 11px;color:var(--ui-faint);font-size:10px}
+.period-card{margin:8px;padding:9px;border:1px solid var(--ui-line-2);border-radius:8px;background:var(--ui-surface);display:grid;grid-template-columns:26px 1fr;gap:6px}
 .period-index{font-weight:800;font-size:10px}
 .period-main{display:grid;gap:3px}
 .period-main strong{font-size:11px}
-.period-main span{font-size:9px;color:#98a2b3}
+.period-main span{font-size:9px;color:var(--ui-faint)}
 .period-flags{grid-column:1/-1;display:flex;gap:4px;flex-wrap:wrap}
 .period-card .danger-text{grid-column:1/-1;text-align:left}
-.validation-ok{background:#ecfdf3;border-color:#abefc6;color:#027a48}
-.validation-error{background:#fef3f2;border-color:#fecdca;color:#b42318}
-.session-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:#667085;margin-bottom:15px}
+.validation-ok{background:var(--ui-ok-bg);border-color:var(--ui-ok-line);color:var(--ui-ok-text)}
+.validation-error{background:var(--ui-err-bg);border-color:var(--ui-err-line);color:var(--ui-err-text)}
+.session-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--ui-muted);margin-bottom:15px}
 .attendance-student{align-items:flex-start}
 .student-info{min-width:150px}
 .attendance-controls{display:grid;gap:7px;min-width:220px}
 .attendance-controls select,.attendance-controls input{width:100%}
-.warning-check{background:#fffbeb;border-color:#fedf89}
+.warning-check{background:var(--ui-warn-bg);border-color:var(--ui-warn-line)}
 .small{font-size:10px}
 @media(max-width:1100px){.timetable-grid{grid-template-columns:repeat(4,minmax(160px,1fr))}.timetable-settings-card{align-items:flex-start;flex-direction:column}}
 @media(max-width:760px){.weekday-grid{grid-template-columns:1fr}.split-toolbar,.table-headline{align-items:flex-start;flex-direction:column}.timetable-grid{grid-template-columns:repeat(2,minmax(180px,1fr))}.attendance-student{display:grid}.attendance-controls{width:100%;min-width:0}}
@@ -47,28 +47,28 @@
 /* Attendance Dashboard: daily report grid */
 .daily-report-toolbar{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
 .daily-report-date{display:flex;align-items:center;gap:10px}
-.daily-report-date input[type="date"]{padding:8px 10px;border:1px solid #d8dee8;border-radius:8px;font-size:12px;color:#344054}
-.daily-report-weekday{font-size:11px;color:#667085;font-weight:650;text-transform:uppercase;letter-spacing:.06em}
+.daily-report-date input[type="date"]{padding:8px 10px;border:1px solid var(--ui-line-strong);border-radius:8px;font-size:12px;color:var(--ui-ink-2)}
+.daily-report-weekday{font-size:11px;color:var(--ui-muted);font-weight:650;text-transform:uppercase;letter-spacing:.06em}
 
-.daily-grid-wrap{overflow:auto;border:1px solid #e8ebf1;border-radius:12px;background:#fff;margin-bottom:18px}
+.daily-grid-wrap{overflow:auto;border:1px solid var(--ui-line);border-radius:12px;background:var(--ui-surface);margin-bottom:18px}
 .daily-grid{border-collapse:collapse;width:100%;min-width:760px}
-.daily-grid th,.daily-grid td{border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5;vertical-align:top}
-.daily-grid th{background:#f8fafc;padding:10px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#667085;white-space:nowrap}
-.daily-grid td.standard-cell{background:#fbfcfe;padding:12px;font-size:12px;font-weight:700;color:#172033;white-space:nowrap}
-.daily-grid td.standard-cell span{display:block;font-size:10px;color:#98a2b3;font-weight:500;margin-top:2px}
+.daily-grid th,.daily-grid td{border-bottom:1px solid var(--ui-line-soft);border-right:1px solid var(--ui-line-soft);vertical-align:top}
+.daily-grid th{background:var(--ui-surface-2);padding:10px 12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ui-muted);white-space:nowrap}
+.daily-grid td.standard-cell{background:var(--ui-surface-3);padding:12px;font-size:12px;font-weight:700;color:var(--ui-ink);white-space:nowrap}
+.daily-grid td.standard-cell span{display:block;font-size:10px;color:var(--ui-faint);font-weight:500;margin-top:2px}
 .daily-cell{padding:0;min-width:150px}
-.daily-cell-empty{display:block;padding:10px 12px;color:#c0c6d1;font-size:11px;text-align:center}
+.daily-cell-empty{display:block;padding:10px 12px;color:var(--ui-ghost);font-size:11px;text-align:center}
 .daily-cell-btn{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;padding:10px 12px}
-.daily-cell-btn:hover{background:#f8fafc}
-.daily-cell-subject{font-size:12px;font-weight:700;color:#172033}
-.daily-cell-staff{font-size:10px;color:#667085;margin-top:2px}
+.daily-cell-btn:hover{background:var(--ui-surface-2)}
+.daily-cell-subject{font-size:12px;font-weight:700;color:var(--ui-ink)}
+.daily-cell-staff{font-size:10px;color:var(--ui-muted);margin-top:2px}
 .daily-cell-stats{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
-.daily-cell-count{font-size:10px;color:#475467;background:#f2f4f7;padding:2px 7px;border-radius:999px;font-weight:700;white-space:nowrap}
-.daily-cell-count.absent{background:#fef3f2;color:#b42318}
-.daily-cell-count.pending{background:#fffaeb;color:#b54708}
+.daily-cell-count{font-size:10px;color:var(--ui-ink-3);background:var(--ui-chip);padding:2px 7px;border-radius:999px;font-weight:700;white-space:nowrap}
+.daily-cell-count.absent{background:var(--ui-err-bg);color:var(--ui-err-text)}
+.daily-cell-count.pending{background:var(--ui-warn-bg);color:var(--ui-warn-text)}
 
-.reason-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#f2f4f7;color:#667085;font-size:10px;font-style:normal;cursor:help}
+.reason-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--ui-chip);color:var(--ui-muted);font-size:10px;font-style:normal;cursor:help}
 
-.table-headline input[type="date"]{padding:8px 10px;border:1px solid #d8dee8;border-radius:8px;font-size:12px;color:#344054}
+.table-headline input[type="date"]{padding:8px 10px;border:1px solid var(--ui-line-strong);border-radius:8px;font-size:12px;color:var(--ui-ink-2)}
 
 @media(max-width:760px){.daily-report-toolbar{align-items:flex-start;flex-direction:column}}

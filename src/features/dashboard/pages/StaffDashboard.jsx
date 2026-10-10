@@ -454,7 +454,7 @@ function SessionModal({
             <button
               type="button"
               onClick={() => onMarkAttendance(session)}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-white"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-on-accent transition hover:bg-accent-hover"
             >
               <UserCheck size={18} />
               Mark Attendance
@@ -1103,7 +1103,7 @@ export default function StaffDashboard() {
                         normalizedCurrentSession
                       )
                     }
-                    className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-white"
+                    className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-on-accent transition hover:bg-accent-hover"
                   >
                     <UserCheck size={18} />
                     Mark Attendance

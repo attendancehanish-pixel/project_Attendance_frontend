@@ -3,6 +3,7 @@ import { CheckCheck, CheckCircle2, CalendarOff, Users, UserCheck, X } from "luci
 import {ConfirmLeaveDialog} from "./ConfirmLeaveDialog";
 import {ConfirmSubmitDialog} from "./ConfirmSubmitDialog ";
 import StatusBadge from "./StatusBadge";
+import StatusToggle from "../../../shared/components/StatusToggle";
 
 export default function AttendanceDrawer({
   detail,
@@ -236,31 +237,19 @@ export default function AttendanceDrawer({
                         </div>
                       </div>
 
-                      <div className="w-32 shrink-0">
-                        <select
-                          disabled={!isEditable}
-                          value={student.status || "PRESENT"}
-                          aria-label={`Attendance status for ${
-                            student.name || student.studentName || "student"
-                          }`}
-                          onChange={(event) =>
-                            onUpdateStudent(student.id, {
-                              status: event.target.value,
-                              ...(event.target.value === "PRESENT"
-                                ? { absenceTypeId: null, remarks: "" }
-                                : {}),
-                            })
-                          }
-                          className={`w-full rounded-xl border px-3 py-2.5 text-xs outline-none transition ${
-                            isAbsent
-                              ? "border-red-500/20 bg-red-500/10 text-red-300"
-                              : "border-slate-800 bg-slate-900 text-slate-200"
-                          } disabled:cursor-not-allowed disabled:opacity-50`}
-                        >
-                          <option value="PRESENT">Present</option>
-                          <option value="ABSENT">Absent</option>
-                        </select>
-                      </div>
+                      <StatusToggle
+                        disabled={!isEditable}
+                        value={student.status || "PRESENT"}
+                        label={student.name || student.studentName || "student"}
+                        onChange={(nextStatus) =>
+                          onUpdateStudent(student.id, {
+                            status: nextStatus,
+                            ...(nextStatus === "PRESENT"
+                              ? { absenceTypeId: null, remarks: "" }
+                              : {}),
+                          })
+                        }
+                      />
                     </div>
 
                     {isAbsent && (
@@ -322,7 +311,7 @@ export default function AttendanceDrawer({
                   type="button"
                   disabled={busy || leaveBusy || students.length === 0}
                   onClick={onRequestSubmit}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <UserCheck size={17} />
                   {busy ? "Submitting..." : "Submit Attendance"}

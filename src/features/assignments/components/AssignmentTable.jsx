@@ -8,7 +8,7 @@ export default function AssignmentTable({ assignments, onEdit, onDelete, loading
       <div className="card">
         <div className="table-empty">
           <p style={{ fontSize: '16px', marginBottom: '8px' }}>📋 No assignments found</p>
-          <p style={{ fontSize: '12px', color: '#98a2b3' }}>
+          <p style={{ fontSize: '12px', color: 'var(--ui-faint)' }}>
             Click "New Assignment" to assign a staff member to a subject
           </p>
         </div>
@@ -34,21 +34,21 @@ export default function AssignmentTable({ assignments, onEdit, onDelete, loading
               <td>
                 <strong>{assignment.staff?.name || 'N/A'}</strong>
                 <br />
-                <span style={{ fontSize: '10px', color: '#98a2b3' }}>
+                <span style={{ fontSize: '10px', color: 'var(--ui-faint)' }}>
                   {assignment.staff?.email || ''}
                 </span>
               </td>
               <td>
                 <strong>{assignment.subject?.name || 'N/A'}</strong>
                 <br />
-                <span style={{ fontSize: '10px', color: '#98a2b3' }}>
+                <span style={{ fontSize: '10px', color: 'var(--ui-faint)' }}>
                   {assignment.subject?.code || ''}
                 </span>
               </td>
               <td>
                 <strong>{assignment.standard?.name || 'N/A'}</strong>
                 <br />
-                <span style={{ fontSize: '10px', color: '#98a2b3' }}>
+                <span style={{ fontSize: '10px', color: 'var(--ui-faint)' }}>
                   {assignment.standard?.code || ''}
                 </span>
               </td>

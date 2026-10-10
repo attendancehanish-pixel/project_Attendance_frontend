@@ -35,6 +35,7 @@ import StaffTimetable from "./features/timetable/pages/StaffTimetable";
 import Staff from "./features/staff/pages/Staff";
 import Assignments from "./features/assignments/pages/Assignments";
 import Reports from "./features/reports/pages/Reports";
+import Settings from "./features/settings/pages/Settings";
 import Placeholder from "./shared/components/Placeholder";
 
 // import AttendanceDashboard from "./attendance/pages/AttendanceDashboard";
@@ -107,6 +108,9 @@ export default function App() {
 
           {/* Reports */}
           <Route path="/reports" element={<Reports />} />
+
+          {/* Account settings (password + appearance) – admin and staff */}
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Route>
 

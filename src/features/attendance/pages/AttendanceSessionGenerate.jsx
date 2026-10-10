@@ -129,17 +129,17 @@ export default function AttendanceSessionGenerate() {
     : null;
 
   return (
-    <div className="min-h-screen bg-[#f5f7fb] text-[#172033]">
+    <div className="min-h-screen bg-ui-page text-ui-ink">
       <div className="mx-auto max-w-3xl px-4 py-6 md:px-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-[#7a8497]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-ui-muted-2">
               Admin
             </p>
-            <h1 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-[#172033]">
+            <h1 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-ui-ink">
               Generate Attendance Sessions
             </h1>
-            <p className="mt-2 max-w-xl text-[13px] text-[#667085]">
+            <p className="mt-2 max-w-xl text-[13px] text-ui-muted">
               Creates pending attendance sessions from the timetable ahead of time, so staff can
               mark them and they show up on the dashboard. Running this again for the same dates
               is safe — existing sessions are left untouched.
@@ -148,7 +148,7 @@ export default function AttendanceSessionGenerate() {
 
           <Link
             to="/attendance"
-            className="shrink-0 rounded-lg border border-[#d8dee8] bg-white px-4 py-2 text-[12px] font-medium text-[#344054] transition hover:bg-[#f8fafc]"
+            className="shrink-0 rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-2 text-[12px] font-medium text-ui-ink-2 transition hover:bg-ui-surface-2"
           >
             ← Back to dashboard
           </Link>
@@ -156,21 +156,21 @@ export default function AttendanceSessionGenerate() {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-6 rounded-xl border border-[#e8ebf1] bg-white p-6"
+          className="space-y-6 rounded-xl border border-ui-line bg-ui-surface p-6"
         >
           {/* Academic year */}
           <div>
-            <label className="mb-2 block text-[11px] font-medium text-[#475467]">
+            <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">
               Academic year
             </label>
             {yearsError && (
-              <p className="text-[12px] text-[#b42318]">Couldn&apos;t load academic years.</p>
+              <p className="text-[12px] text-ui-err-text">Couldn&apos;t load academic years.</p>
             )}
             {!yearsError && (
               <select
                 value={academicYearId}
                 onChange={(e) => setAcademicYearId(e.target.value)}
-                className="w-full rounded-lg border border-[#d8dee8] bg-white px-4 py-3 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
+                className="w-full rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-3 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
               >
                 {!years && <option value="">Loading…</option>}
                 {years?.length === 0 && <option value="">No academic years found</option>}
@@ -185,7 +185,7 @@ export default function AttendanceSessionGenerate() {
 
           {/* Mode */}
           <div>
-            <label className="mb-2 block text-[11px] font-medium text-[#475467]">
+            <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">
               Generate for
             </label>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -195,8 +195,8 @@ export default function AttendanceSessionGenerate() {
                   key={m.id}
                   onClick={() => setMode(m.id)}
                   className={`rounded-lg border px-4 py-3 text-[12px] font-medium transition ${mode === m.id
-                      ? "border-[#172033] bg-[#172033] text-white"
-                      : "border-[#d8dee8] bg-white text-[#344054] hover:bg-[#f8fafc]"
+                      ? "border-accent bg-accent text-on-accent"
+                      : "border-ui-line-strong bg-ui-surface text-ui-ink-2 hover:bg-ui-surface-2"
                     }`}
                 >
                   {m.label}
@@ -208,28 +208,28 @@ export default function AttendanceSessionGenerate() {
           {/* Date inputs, depending on mode */}
           {mode === "day" && (
             <div>
-              <label className="mb-2 block text-[11px] font-medium text-[#475467]">Date</label>
+              <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">Date</label>
               <input
                 type="date"
                 value={singleDate}
                 onChange={(e) => setSingleDate(e.target.value)}
-                className="rounded-lg border border-[#d8dee8] bg-white px-4 py-3 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
+                className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-3 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
               />
             </div>
           )}
 
           {mode === "week" && (
             <div>
-              <label className="mb-2 block text-[11px] font-medium text-[#475467]">
+              <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">
                 Week starting
               </label>
               <input
                 type="date"
                 value={weekStart}
                 onChange={(e) => setWeekStart(e.target.value)}
-                className="rounded-lg border border-[#d8dee8] bg-white px-4 py-3 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
+                className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-3 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
               />
-              <p className="mt-2 text-[10px] text-[#98a2b3]">
+              <p className="mt-2 text-[10px] text-ui-faint">
                 Generates 7 days, {dateOnly(weekStart)} → {dateOnly(addDaysISO(weekStart, 6))}.
               </p>
             </div>
@@ -237,14 +237,14 @@ export default function AttendanceSessionGenerate() {
 
           {mode === "month" && (
             <div>
-              <label className="mb-2 block text-[11px] font-medium text-[#475467]">Month</label>
+              <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">Month</label>
               <input
                 type="month"
                 value={monthValue}
                 onChange={(e) => setMonthValue(e.target.value)}
-                className="rounded-lg border border-[#d8dee8] bg-white px-4 py-3 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
+                className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-3 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
               />
-              <p className="mt-2 text-[10px] text-[#98a2b3]">
+              <p className="mt-2 text-[10px] text-ui-faint">
                 Generates {dateOnly(monthToRange(monthValue).from)} →{" "}
                 {dateOnly(monthToRange(monthValue).to)}.
               </p>
@@ -254,33 +254,33 @@ export default function AttendanceSessionGenerate() {
           {mode === "range" && (
             <div className="flex flex-wrap items-end gap-4">
               <div>
-                <label className="mb-2 block text-[11px] font-medium text-[#475467]">From</label>
+                <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">From</label>
                 <input
                   type="date"
                   value={rangeFrom}
                   max={rangeTo}
                   onChange={(e) => setRangeFrom(e.target.value)}
-                  className="rounded-lg border border-[#d8dee8] bg-white px-4 py-3 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
+                  className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-3 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
                 />
               </div>
               <div>
-                <label className="mb-2 block text-[11px] font-medium text-[#475467]">To</label>
+                <label className="mb-2 block text-[11px] font-medium text-ui-ink-3">To</label>
                 <input
                   type="date"
                   value={rangeTo}
                   min={rangeFrom}
                   onChange={(e) => setRangeTo(e.target.value)}
-                  className="rounded-lg border border-[#d8dee8] bg-white px-4 py-3 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
+                  className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-3 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted focus:shadow-[0_0_0_3px_rgba(16,24,40,0.06)]"
                 />
               </div>
               {rangeDays && (
-                <p className="pb-3 text-[10px] text-[#98a2b3]">{rangeDays} day(s)</p>
+                <p className="pb-3 text-[10px] text-ui-faint">{rangeDays} day(s)</p>
               )}
             </div>
           )}
 
           {planError && (
-            <div className="rounded-lg border border-[#fedf89] bg-[#fffbeb] px-4 py-3 text-[12px] text-[#b54708]">
+            <div className="rounded-lg border border-ui-warn-line bg-ui-warn-bg px-4 py-3 text-[12px] text-ui-warn-text">
               {planError}
             </div>
           )}
@@ -289,7 +289,7 @@ export default function AttendanceSessionGenerate() {
             <button
               type="submit"
               disabled={submitting || !academicYearId || !!planError}
-              className="rounded-lg border border-[#172033] bg-[#172033] px-5 py-3 text-[12px] font-semibold text-white transition hover:bg-[#273247] disabled:cursor-not-allowed disabled:opacity-55"
+              className="rounded-lg border border-accent bg-accent px-5 py-3 text-[12px] font-semibold text-on-accent transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-55"
             >
               {submitting ? "Generating…" : "Generate sessions"}
             </button>
@@ -297,18 +297,18 @@ export default function AttendanceSessionGenerate() {
         </form>
 
         {submitError && (
-          <div className="mt-6 rounded-xl border border-[#fecdca] bg-[#fef3f2] px-6 py-4 text-[12px] text-[#b42318]">
+          <div className="mt-6 rounded-xl border border-ui-err-line bg-ui-err-bg px-6 py-4 text-[12px] text-ui-err-text">
             Couldn&apos;t generate sessions. {submitError.message}
           </div>
         )}
 
         {result && (
-          <div className="mt-6 rounded-xl border border-[#abefc6] bg-[#ecfdf3] p-6">
-            <h2 className="text-[12px] font-semibold text-[#027a48]">Sessions generated</h2>
+          <div className="mt-6 rounded-xl border border-ui-ok-line bg-ui-ok-bg p-6">
+            <h2 className="text-[12px] font-semibold text-ui-ok-text">Sessions generated</h2>
 
             {"totals" in result ? (
               <>
-                <p className="mt-1 text-[11px] text-[#667085]">
+                <p className="mt-1 text-[11px] text-ui-muted">
                   {dateOnly(result.from)} → {dateOnly(result.to)}
                 </p>
                 <SummaryGrid totals={result.totals} />
@@ -316,15 +316,15 @@ export default function AttendanceSessionGenerate() {
                 <button
                   type="button"
                   onClick={() => setShowDayBreakdown((s) => !s)}
-                  className="mt-4 text-[11px] font-medium text-[#344054] underline hover:text-[#111827]"
+                  className="mt-4 text-[11px] font-medium text-ui-ink-2 underline hover:text-ui-ink"
                 >
                   {showDayBreakdown ? "Hide" : "Show"} day-by-day breakdown
                 </button>
 
                 {showDayBreakdown && (
-                  <div className="mt-3 overflow-hidden rounded-lg border border-[#e8ebf1] bg-white">
+                  <div className="mt-3 overflow-hidden rounded-lg border border-ui-line bg-ui-surface">
                     <table className="w-full text-left text-[11px]">
-                      <thead className="bg-[#f8fafc] text-[#667085]">
+                      <thead className="bg-ui-surface-2 text-ui-muted">
                         <tr>
                           <th className="px-3 py-2 font-bold uppercase tracking-[0.07em] text-[10px]">
                             Date
@@ -343,14 +343,14 @@ export default function AttendanceSessionGenerate() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-[#eef1f5]">
+                      <tbody className="divide-y divide-ui-line-soft">
                         {result.days.map((day) => (
-                          <tr key={day.date} className="transition hover:bg-[#fbfcfe]">
-                            <td className="px-3 py-2 text-[#344054]">{dateOnly(day.date)}</td>
-                            <td className="px-3 py-2 text-[#344054]">{day.created}</td>
-                            <td className="px-3 py-2 text-[#344054]">{day.skipped}</td>
-                            <td className="px-3 py-2 text-[#344054]">{day.staffLeave || 0}</td>
-                            <td className="px-3 py-2 text-[#98a2b3]">
+                          <tr key={day.date} className="transition hover:bg-ui-surface-3">
+                            <td className="px-3 py-2 text-ui-ink-2">{dateOnly(day.date)}</td>
+                            <td className="px-3 py-2 text-ui-ink-2">{day.created}</td>
+                            <td className="px-3 py-2 text-ui-ink-2">{day.skipped}</td>
+                            <td className="px-3 py-2 text-ui-ink-2">{day.staffLeave || 0}</td>
+                            <td className="px-3 py-2 text-ui-faint">
                               {day.reason ? day.reason.replaceAll("_", " ").toLowerCase() : "—"}
                             </td>
                           </tr>
@@ -362,10 +362,10 @@ export default function AttendanceSessionGenerate() {
               </>
             ) : (
               <>
-                <p className="mt-1 text-[11px] text-[#667085]">{dateOnly(result.date)}</p>
+                <p className="mt-1 text-[11px] text-ui-muted">{dateOnly(result.date)}</p>
                 <SummaryGrid totals={result} />
                 {result.reason && (
-                  <p className="mt-3 text-[10px] text-[#98a2b3]">
+                  <p className="mt-3 text-[10px] text-ui-faint">
                     Reason: {result.reason.replaceAll("_", " ").toLowerCase()}
                   </p>
                 )}
@@ -375,7 +375,7 @@ export default function AttendanceSessionGenerate() {
             <div className="mt-5">
               <Link
                 to="/attendance"
-                className="text-[12px] font-medium text-[#027a48] hover:text-[#05603a]"
+                className="text-[12px] font-medium text-ui-ok-text hover:text-ui-ok-text-strong"
               >
                 View on the attendance dashboard →
               </Link>
@@ -399,9 +399,9 @@ function SummaryGrid({ totals }) {
 
 function Stat({ label, value }) {
   return (
-    <div className="rounded-lg border border-[#e8ebf1] bg-white p-3">
-      <p className="text-[10px] font-medium text-[#667085]">{label}</p>
-      <p className="mt-1 text-lg font-semibold tracking-[-0.03em] text-[#172033]">
+    <div className="rounded-lg border border-ui-line bg-ui-surface p-3">
+      <p className="text-[10px] font-medium text-ui-muted">{label}</p>
+      <p className="mt-1 text-lg font-semibold tracking-[-0.03em] text-ui-ink">
         {value ?? 0}
       </p>
     </div>

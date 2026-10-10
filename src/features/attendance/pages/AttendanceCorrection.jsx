@@ -28,7 +28,7 @@ export default function AttendanceCorrection(){
         {isAbsent&&<div><label className="mb-2 block text-sm font-medium">Absence type</label><select value={absenceType} onChange={e=>setAbsenceType(e.target.value)} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm"><option value="medical">Medical</option>{absenceTypes.filter(x=>x.id!=="medical").map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></div>}
         <div><label className="mb-2 block text-sm font-medium">Correction reason</label><textarea required value={reason} onChange={e=>setReason(e.target.value)} rows={5} placeholder="Explain why the attendance record needs to be corrected..." className="w-full resize-none rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm placeholder:text-slate-600"/></div>
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-200">Current: <b>{correctionMock.currentAttendance.status}</b> → New: <b>{newStatus}</b></div>
-        <div className="flex justify-end gap-3"><button type="button" onClick={()=>navigate(-1)} className="rounded-xl border border-slate-700 px-5 py-3 text-sm">Cancel</button><button className="rounded-xl bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-950">Submit correction</button></div>
+        <div className="flex justify-end gap-3"><button type="button" onClick={()=>navigate(-1)} className="rounded-xl border border-slate-700 px-5 py-3 text-sm">Cancel</button><button className="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-on-accent">Submit correction</button></div>
         </div>
       </form>
     </div>

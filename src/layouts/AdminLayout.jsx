@@ -108,6 +108,14 @@ export default function AdminLayout() {
         <Navigation canSee={canSee} />
 
         <div className="sidebar-footer">
+          {/* Always visible (the nav above scrolls on short screens) */}
+          <NavLink
+            to="/settings"
+            className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+          >
+            <span className="nav-icon">⚙</span>
+            <span>Settings</span>
+          </NavLink>
           <div className="user-mini">
             <div className="avatar">{user?.name?.slice(0, 1)?.toUpperCase()}</div>
             <div>

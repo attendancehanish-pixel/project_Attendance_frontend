@@ -46,7 +46,7 @@ export  function ConfirmSubmitDialog({ presentCount, absentCount, busy, onCancel
             onClick={onConfirm}
             disabled={busy}
             autoFocus
-            className="flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex items-center justify-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             <UserCheck size={16} />
             {busy ? "Submitting..." : "Yes, submit"}

@@ -1,0 +1,357 @@
+/* =============================================================================
+   THEME TOKENS  (light / dark  ×  accent colour)
+   -----------------------------------------------------------------------------
+   <html data-mode="light|dark" data-accent="slate|blue|…"> is set by
+   ThemeProvider (src/shared/theme/ThemeContext.jsx).
+
+   1. --ui-*      neutral + status tokens.  Light values are the ORIGINAL admin
+                  palette, so the default admin look is unchanged.
+   2. --accent-*  primary / brand colour used by buttons, active nav, toggles.
+   3. Tailwind    tokens are registered as utilities: bg-ui-surface,
+                  text-ui-muted, border-ui-line, bg-accent, text-on-accent …
+   4. Staff UI    is written with Tailwind `slate-*` (dark) classes.  Light mode
+                  simply re-maps the slate scale below, so every staff page
+                  follows the theme without per-component edits.
+   ============================================================================= */
+
+/* ---- 3. Tailwind registration ------------------------------------------- */
+@theme inline {
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-accent-border: var(--accent-border);
+
+  --color-ui-page: var(--ui-page);
+  --color-ui-surface: var(--ui-surface);
+  --color-ui-surface-2: var(--ui-surface-2);
+  --color-ui-surface-3: var(--ui-surface-3);
+  --color-ui-chip: var(--ui-chip);
+  --color-ui-chip-2: var(--ui-chip-2);
+  --color-ui-line-soft: var(--ui-line-soft);
+  --color-ui-line: var(--ui-line);
+  --color-ui-line-2: var(--ui-line-2);
+  --color-ui-line-strong: var(--ui-line-strong);
+  --color-ui-line-hover: var(--ui-line-hover);
+  --color-ui-ink: var(--ui-ink);
+  --color-ui-ink-2: var(--ui-ink-2);
+  --color-ui-ink-3: var(--ui-ink-3);
+  --color-ui-muted: var(--ui-muted);
+  --color-ui-muted-2: var(--ui-muted-2);
+  --color-ui-faint: var(--ui-faint);
+  --color-ui-ghost: var(--ui-ghost);
+
+  --color-ui-ok-bg: var(--ui-ok-bg);
+  --color-ui-ok-bg-hover: var(--ui-ok-bg-hover);
+  --color-ui-ok-bg-faint: var(--ui-ok-bg-faint);
+  --color-ui-ok-line: var(--ui-ok-line);
+  --color-ui-ok-line-hover: var(--ui-ok-line-hover);
+  --color-ui-ok-text: var(--ui-ok-text);
+  --color-ui-ok-text-strong: var(--ui-ok-text-strong);
+  --color-ui-ok-dot: var(--ui-ok-dot);
+
+  --color-ui-err-bg: var(--ui-err-bg);
+  --color-ui-err-bg-hover: var(--ui-err-bg-hover);
+  --color-ui-err-bg-faint: var(--ui-err-bg-faint);
+  --color-ui-err-line: var(--ui-err-line);
+  --color-ui-err-line-hover: var(--ui-err-line-hover);
+  --color-ui-err-text: var(--ui-err-text);
+  --color-ui-err-text-strong: var(--ui-err-text-strong);
+  --color-ui-err-dot: var(--ui-err-dot);
+
+  --color-ui-warn-bg: var(--ui-warn-bg);
+  --color-ui-warn-line: var(--ui-warn-line);
+  --color-ui-warn-text: var(--ui-warn-text);
+  --color-ui-warn-dot: var(--ui-warn-dot);
+
+  --color-ui-info-bg: var(--ui-info-bg);
+  --color-ui-info-line: var(--ui-info-line);
+  --color-ui-info-text: var(--ui-info-text);
+  --color-ui-info-text-strong: var(--ui-info-text-strong);
+}
+
+/* ---- 1 + 2. LIGHT (default) --------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --ui-page: #f5f7fb;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #f8fafc;
+  --ui-surface-3: #fbfcfe;
+  --ui-chip: #f2f4f7;
+  --ui-chip-2: #eef2f6;
+  --ui-line-soft: #eef1f5;
+  --ui-line: #e8ebf1;
+  --ui-line-2: #e4e7ec;
+  --ui-line-strong: #d8dee8;
+  --ui-line-hover: #cfd6e1;
+  --ui-ink: #172033;
+  --ui-ink-2: #344054;
+  --ui-ink-3: #475467;
+  --ui-muted: #667085;
+  --ui-muted-2: #7a8497;
+  --ui-faint: #98a2b3;
+  --ui-ghost: #c0c6d1;
+
+  --ui-ok-bg: #ecfdf3;
+  --ui-ok-bg-hover: #d1fadf;
+  --ui-ok-bg-faint: #f6fffa;
+  --ui-ok-line: #abefc6;
+  --ui-ok-line-hover: #75e0a7;
+  --ui-ok-text: #027a48;
+  --ui-ok-text-strong: #05603a;
+  --ui-ok-dot: #12b76a;
+
+  --ui-err-bg: #fef3f2;
+  --ui-err-bg-hover: #fee4e2;
+  --ui-err-bg-faint: #fffafa;
+  --ui-err-line: #fecdca;
+  --ui-err-line-hover: #fda29b;
+  --ui-err-text: #b42318;
+  --ui-err-text-strong: #912018;
+  --ui-err-dot: #f04438;
+
+  --ui-warn-bg: #fffaeb;
+  --ui-warn-line: #fedf89;
+  --ui-warn-text: #b54708;
+  --ui-warn-dot: #f79009;
+
+  --ui-info-bg: #f4ebff;
+  --ui-info-line: #d6bbfb;
+  --ui-info-text: #6941c6;
+  --ui-info-text-strong: #5925dc;
+
+  /* accent: slate (default) */
+  --accent: #172033;
+  --accent-hover: #273247;
+  --on-accent: #ffffff;
+  --accent-soft: #eef1f5;
+  --accent-text: #172033;
+  --accent-border: #667085;
+  --accent-ring: rgba(16, 24, 40, 0.06);
+  --nav-active: #273247;
+}
+
+/* ---- DARK --------------------------------------------------------------- */
+:root[data-mode="dark"] {
+  color-scheme: dark;
+
+  --ui-page: #020617;
+  --ui-surface: #0f172a;
+  --ui-surface-2: #131d33;
+  --ui-surface-3: #0b1326;
+  --ui-chip: #1e293b;
+  --ui-chip-2: #1e293b;
+  --ui-line-soft: #1a2438;
+  --ui-line: #1e293b;
+  --ui-line-2: #243247;
+  --ui-line-strong: #334155;
+  --ui-line-hover: #475569;
+  --ui-ink: #f1f5f9;
+  --ui-ink-2: #e2e8f0;
+  --ui-ink-3: #cbd5e1;
+  --ui-muted: #94a3b8;
+  --ui-muted-2: #8391a7;
+  --ui-faint: #64748b;
+  --ui-ghost: #475569;
+
+  --ui-ok-bg: rgba(16, 185, 129, 0.12);
+  --ui-ok-bg-hover: rgba(16, 185, 129, 0.2);
+  --ui-ok-bg-faint: rgba(16, 185, 129, 0.06);
+  --ui-ok-line: rgba(16, 185, 129, 0.3);
+  --ui-ok-line-hover: rgba(16, 185, 129, 0.45);
+  --ui-ok-text: #34d399;
+  --ui-ok-text-strong: #6ee7b7;
+  --ui-ok-dot: #10b981;
+
+  --ui-err-bg: rgba(239, 68, 68, 0.12);
+  --ui-err-bg-hover: rgba(239, 68, 68, 0.2);
+  --ui-err-bg-faint: rgba(239, 68, 68, 0.06);
+  --ui-err-line: rgba(239, 68, 68, 0.3);
+  --ui-err-line-hover: rgba(239, 68, 68, 0.45);
+  --ui-err-text: #f87171;
+  --ui-err-text-strong: #fca5a5;
+  --ui-err-dot: #ef4444;
+
+  --ui-warn-bg: rgba(245, 158, 11, 0.12);
+  --ui-warn-line: rgba(245, 158, 11, 0.3);
+  --ui-warn-text: #fbbf24;
+  --ui-warn-dot: #f59e0b;
+
+  --ui-info-bg: rgba(139, 92, 246, 0.14);
+  --ui-info-line: rgba(139, 92, 246, 0.35);
+  --ui-info-text: #a78bfa;
+  --ui-info-text-strong: #c4b5fd;
+
+  /* accent: slate (default) */
+  --accent: #f1f5f9;
+  --accent-hover: #ffffff;
+  --on-accent: #020617;
+  --accent-soft: rgba(148, 163, 184, 0.14);
+  --accent-text: #e2e8f0;
+  --accent-border: #64748b;
+  --accent-ring: rgba(148, 163, 184, 0.18);
+  --nav-active: #273247;
+}
+
+/* ---- ACCENT COLOURS ------------------------------------------------------ */
+
+:root[data-accent="blue"] {
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --on-accent: #ffffff;
+  --accent-soft: #eff6ff;
+  --accent-text: #1d4ed8;
+  --accent-border: #2563eb;
+  --accent-ring: rgba(37,99,235, 0.18);
+  --nav-active: #2563eb;
+}
+:root[data-accent="blue"][data-mode="dark"] {
+  --accent: #2563eb;
+  --accent-hover: #3b82f6;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(59,130,246, 0.16);
+  --accent-text: #60a5fa;
+  --accent-border: #3b82f6;
+  --accent-ring: rgba(59,130,246, 0.28);
+  --nav-active: #2563eb;
+}
+
+:root[data-accent="indigo"] {
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --on-accent: #ffffff;
+  --accent-soft: #eef2ff;
+  --accent-text: #4338ca;
+  --accent-border: #4f46e5;
+  --accent-ring: rgba(79,70,229, 0.18);
+  --nav-active: #4f46e5;
+}
+:root[data-accent="indigo"][data-mode="dark"] {
+  --accent: #4f46e5;
+  --accent-hover: #6366f1;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(99,102,241, 0.16);
+  --accent-text: #818cf8;
+  --accent-border: #6366f1;
+  --accent-ring: rgba(99,102,241, 0.28);
+  --nav-active: #4f46e5;
+}
+
+:root[data-accent="violet"] {
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --on-accent: #ffffff;
+  --accent-soft: #f5f3ff;
+  --accent-text: #6d28d9;
+  --accent-border: #7c3aed;
+  --accent-ring: rgba(124,58,237, 0.18);
+  --nav-active: #7c3aed;
+}
+:root[data-accent="violet"][data-mode="dark"] {
+  --accent: #7c3aed;
+  --accent-hover: #8b5cf6;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(139,92,246, 0.16);
+  --accent-text: #a78bfa;
+  --accent-border: #8b5cf6;
+  --accent-ring: rgba(139,92,246, 0.28);
+  --nav-active: #7c3aed;
+}
+
+:root[data-accent="emerald"] {
+  --accent: #047857;
+  --accent-hover: #065f46;
+  --on-accent: #ffffff;
+  --accent-soft: #ecfdf5;
+  --accent-text: #047857;
+  --accent-border: #047857;
+  --accent-ring: rgba(4,120,87, 0.18);
+  --nav-active: #047857;
+}
+:root[data-accent="emerald"][data-mode="dark"] {
+  --accent: #047857;
+  --accent-hover: #059669;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(16,185,129, 0.16);
+  --accent-text: #34d399;
+  --accent-border: #059669;
+  --accent-ring: rgba(16,185,129, 0.28);
+  --nav-active: #047857;
+}
+
+:root[data-accent="rose"] {
+  --accent: #e11d48;
+  --accent-hover: #be123c;
+  --on-accent: #ffffff;
+  --accent-soft: #fff1f2;
+  --accent-text: #be123c;
+  --accent-border: #e11d48;
+  --accent-ring: rgba(225,29,72, 0.18);
+  --nav-active: #e11d48;
+}
+:root[data-accent="rose"][data-mode="dark"] {
+  --accent: #e11d48;
+  --accent-hover: #f43f5e;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(244,63,94, 0.16);
+  --accent-text: #fb7185;
+  --accent-border: #f43f5e;
+  --accent-ring: rgba(244,63,94, 0.28);
+  --nav-active: #e11d48;
+}
+
+:root[data-accent="amber"] {
+  --accent: #b45309;
+  --accent-hover: #92400e;
+  --on-accent: #ffffff;
+  --accent-soft: #fffbeb;
+  --accent-text: #b45309;
+  --accent-border: #b45309;
+  --accent-ring: rgba(180,83,9, 0.18);
+  --nav-active: #b45309;
+}
+:root[data-accent="amber"][data-mode="dark"] {
+  --accent: #b45309;
+  --accent-hover: #d97706;
+  --on-accent: #ffffff;
+  --accent-soft: rgba(245,158,11, 0.16);
+  --accent-text: #fbbf24;
+  --accent-border: #d97706;
+  --accent-ring: rgba(245,158,11, 0.28);
+  --nav-active: #b45309;
+}
+
+
+/* ---- 4. STAFF UI in LIGHT mode -------------------------------------------
+   Staff screens use Tailwind's dark slate palette.  In light mode we re-map
+   the scale (950 = page … 100 = text) onto the same neutral palette the admin
+   UI uses, and darken the pale 200–400 status shades so they stay readable
+   on a light background.  Dark mode uses Tailwind's defaults untouched.     */
+:root[data-mode="light"] {
+  --color-slate-50: #0f172a;
+  --color-slate-100: #172033;
+  --color-slate-200: #1d2939;
+  --color-slate-300: #344054;
+  --color-slate-400: #475467;
+  --color-slate-500: #667085;
+  --color-slate-600: #98a2b3;
+  --color-slate-700: #d0d5dd;
+  --color-slate-800: #e8ebf1;
+  --color-slate-900: #ffffff;
+  --color-slate-950: #f5f7fb;
+
+  --color-red-200: #991b1b;     --color-red-300: #b91c1c;     --color-red-400: #dc2626;     --color-red-950: #fef2f2;
+  --color-emerald-200: #065f46; --color-emerald-300: #047857; --color-emerald-400: #059669; --color-emerald-950: #ecfdf5;
+  --color-amber-200: #92400e;   --color-amber-300: #b45309;   --color-amber-400: #d97706;
+  --color-blue-300: #1d4ed8;    --color-blue-400: #2563eb;
+  --color-purple-200: #6b21a8;  --color-purple-300: #7e22ce;  --color-purple-400: #9333ea;
+}
+
+/* ---- Login page brand --------------------------------------------------------
+   `.brand` is styled for the dark admin sidebar (white title); on the login
+   panel it sits on the page surface, so use theme tokens there.               */
+.login-panel .brand strong { color: var(--ui-ink); }
+.login-panel .brand span { color: var(--ui-muted); }
+.login-panel .brand-mark { background: var(--accent); color: var(--on-accent); }

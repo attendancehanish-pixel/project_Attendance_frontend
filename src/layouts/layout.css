@@ -3,7 +3,7 @@
 
 .staff-shell {
   min-height: 100vh;
-  background: #f5f7fb;
+  background: var(--ui-page);
 }
 
 .staff-shell .main {
@@ -24,7 +24,7 @@
   gap: 12px;
   padding: 10px 14px;
   background: rgba(255,255,255,.96);
-  border-bottom: 1px solid #e8ebf1;
+  border-bottom: 1px solid var(--ui-line);
   backdrop-filter: blur(12px);
 }
 
@@ -37,7 +37,7 @@
 .staff-brand { gap: 9px; }
 .staff-brand .brand-mark { width: 34px; height: 34px; }
 .staff-brand strong { display:block; font-size: 13px; }
-.staff-brand span { display:block; margin-top:2px; font-size:10px; color:#98a2b3; }
+.staff-brand span { display:block; margin-top:2px; font-size:10px; color:var(--ui-faint); }
 
 .staff-user { gap: 8px; }
 .staff-user-name {
@@ -47,7 +47,7 @@
   white-space: nowrap;
   font-size: 11px;
   font-weight: 700;
-  color: #344054;
+  color: var(--ui-ink-2);
 }
 .staff-user .icon-button {
   flex: none;
@@ -79,7 +79,7 @@
   grid-auto-columns: 1fr;
   align-items: stretch;
   background: rgba(255,255,255,.98);
-  border-top: 1px solid #e8ebf1;
+  border-top: 1px solid var(--ui-line);
   box-shadow: 0 -8px 24px rgba(15,23,42,.06);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -89,7 +89,7 @@
   min-width: 0;
   border: 0;
   background: transparent;
-  color: #667085;
+  color: var(--ui-muted);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -108,7 +108,7 @@
 
 .staff-nav-item.active,
 .staff-more summary:hover {
-  color: #172033;
+  color: var(--ui-ink);
 }
 
 .staff-more {
@@ -123,8 +123,8 @@
   bottom: 58px;
   width: 190px;
   padding: 7px;
-  background: #fff;
-  border: 1px solid #e8ebf1;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-line);
   border-radius: 12px;
   box-shadow: 0 14px 40px rgba(15,23,42,.14);
 }
@@ -136,10 +136,10 @@
   padding:11px;
   border-radius:8px;
   font-size:12px;
-  color:#344054;
+  color:var(--ui-ink-2);
 }
 
-.staff-more-item:hover { background:#f8fafc; }
+.staff-more-item:hover { background:var(--ui-surface-2); }
 
 @media (min-width: 761px) {
   .staff-shell .main { padding-bottom: 0; }

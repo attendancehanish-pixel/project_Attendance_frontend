@@ -33,11 +33,26 @@ export function AuthProvider({ children }) {
     }
   }
 
+  // POST /auth/change-password. The backend revokes every refresh token on
+  // success, so the caller must follow up with endSession() (see Settings).
+  async function changePassword(currentPassword, newPassword) {
+    return post("/auth/change-password", { currentPassword, newPassword });
+  }
+
+  // Drop the local session without calling /auth/logout (the server already
+  // revoked the refresh tokens). ProtectedRoute then redirects to /login.
+  function endSession() {
+    setAccessToken(null);
+    setUser(null);
+  }
+
   const value = useMemo(() => ({
     user,
     loading,
     login,
     logout,
+    changePassword,
+    endSession,
     hasPermission: (permission) => Boolean(user?.permissions?.includes(permission)),
     isAdmin: Boolean(user?.roles?.includes("ADMIN")),
   }), [user, loading]);

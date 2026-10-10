@@ -215,7 +215,7 @@ export default function Assignments() {
                 <div>
                   <strong>{r.standardName}</strong>
                   <br />
-                  <span style={{ fontSize: '10px', color: '#98a2b3' }}>
+                  <span style={{ fontSize: '10px', color: 'var(--ui-faint)' }}>
                     {r.standardCode}
                   </span>
                 </div>
@@ -228,7 +228,7 @@ export default function Assignments() {
                 <div>
                   <strong>{r.subjectName}</strong>
                   <br />
-                  <span style={{ fontSize: '10px', color: '#98a2b3' }}>
+                  <span style={{ fontSize: '10px', color: 'var(--ui-faint)' }}>
                     {r.subjectCode}
                   </span>
                 </div>
@@ -241,7 +241,7 @@ export default function Assignments() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {r.isAssigned ? (
                     <>
-                      <span style={{ fontWeight: '500', color: '#0e7b4c' }}>
+                      <span style={{ fontWeight: '500', color: 'var(--ui-ok-text)' }}>
                         {r.staffName}
                       </span>
                       <button
@@ -254,7 +254,7 @@ export default function Assignments() {
                       </button>
                     </>
                   ) : (
-                    <span style={{ color: '#98a2b3' }}>Not assigned</span>
+                    <span style={{ color: 'var(--ui-faint)' }}>Not assigned</span>
                   )}
                   <button
                     className="button"
@@ -288,7 +288,7 @@ export default function Assignments() {
         >
           <div style={{ maxHeight: '400px', overflow: 'auto' }}>
             {availableStaff.length === 0 ? (
-              <p style={{ color: '#98a2b3' }}>No staff members available</p>
+              <p style={{ color: 'var(--ui-faint)' }}>No staff members available</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {availableStaff.map(staff => (
@@ -299,11 +299,11 @@ export default function Assignments() {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       padding: '12px',
-                      border: '1px solid #e4e7ec',
+                      border: '1px solid var(--ui-line-2)',
                       borderRadius: '6px',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
-                      backgroundColor: selectedAssignment.staffId === staff.id ? '#e8f5e9' : 'transparent'
+                      backgroundColor: selectedAssignment.staffId === staff.id ? 'var(--ui-ok-bg)' : 'transparent'
                     }}
                     onClick={() => {
                       handleAssignStaff(selectedAssignment, staff.id);
@@ -311,7 +311,7 @@ export default function Assignments() {
                       setSelectedAssignment(null);
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f5f6fa';
+                      e.currentTarget.style.backgroundColor = 'var(--ui-surface-2)';
                     }}
                     onMouseLeave={(e) => {
                       if (selectedAssignment.staffId !== staff.id) {
@@ -322,14 +322,14 @@ export default function Assignments() {
                     <div>
                       <strong>{staff.name}</strong>
                       <br />
-                      <span style={{ fontSize: '12px', color: '#667085' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--ui-muted)' }}>
                         {staff.email} {staff.designation ? `• ${staff.designation}` : ''}
                       </span>
                     </div>
                     <span style={{ 
                       fontSize: '12px', 
-                      color: '#667085',
-                      background: '#f5f6fa',
+                      color: 'var(--ui-muted)',
+                      background: 'var(--ui-surface-2)',
                       padding: '2px 8px',
                       borderRadius: '4px'
                     }}>

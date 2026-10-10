@@ -57,31 +57,31 @@ const READ_ONLY_REASONS = {
 
 const READ_ONLY_TONES = {
   success: {
-    wrapper: "border-[#abefc6] bg-[#ecfdf3]",
-    icon: "text-[#027a48]",
-    title: "text-[#027a48]",
-    body: "text-[#05603a]",
+    wrapper: "border-ui-ok-line bg-ui-ok-bg",
+    icon: "text-ui-ok-text",
+    title: "text-ui-ok-text",
+    body: "text-ui-ok-text-strong",
     Icon: CheckCircle2,
   },
   info: {
-    wrapper: "border-[#d6bbfb] bg-[#f4ebff]",
-    icon: "text-[#6941c6]",
-    title: "text-[#6941c6]",
-    body: "text-[#5925dc]",
+    wrapper: "border-ui-info-line bg-ui-info-bg",
+    icon: "text-ui-info-text",
+    title: "text-ui-info-text",
+    body: "text-ui-info-text-strong",
     Icon: Clock3,
   },
   neutral: {
-    wrapper: "border-[#e4e7ec] bg-[#f2f4f7]",
-    icon: "text-[#475467]",
-    title: "text-[#344054]",
-    body: "text-[#475467]",
+    wrapper: "border-ui-line-2 bg-ui-chip",
+    icon: "text-ui-ink-3",
+    title: "text-ui-ink-2",
+    body: "text-ui-ink-3",
     Icon: AlertCircle,
   },
   danger: {
-    wrapper: "border-[#fecdca] bg-[#fef3f2]",
-    icon: "text-[#b42318]",
-    title: "text-[#b42318]",
-    body: "text-[#912018]",
+    wrapper: "border-ui-err-line bg-ui-err-bg",
+    icon: "text-ui-err-text",
+    title: "text-ui-err-text",
+    body: "text-ui-err-text-strong",
     Icon: AlertCircle,
   },
 };
@@ -114,48 +114,48 @@ function SubmitConfirmDialog({
       onClick={busy ? undefined : onCancel}
     >
       <div
-        className="w-full max-w-md overflow-hidden rounded-t-2xl border border-[#e8ebf1] bg-white shadow-2xl sm:rounded-2xl"
+        className="w-full max-w-md overflow-hidden rounded-t-2xl border border-ui-line bg-ui-surface shadow-2xl sm:rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start gap-3 px-5 pt-5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fffaeb] text-[#b54708]">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-ui-warn-bg text-ui-warn-text">
             <AlertTriangle size={19} />
           </div>
           <div className="min-w-0">
-            <h3 className="text-[14px] font-semibold text-[#172033]">
+            <h3 className="text-[14px] font-semibold text-ui-ink">
               Submit attendance?
             </h3>
-            <p className="mt-1 text-[12px] leading-5 text-[#667085]">
+            <p className="mt-1 text-[12px] leading-5 text-ui-muted">
               This will lock the session and attendance can no longer be edited
               without a correction.
             </p>
           </div>
         </div>
 
-        <div className="mt-4 space-y-2 border-y border-[#eef1f5] bg-[#f8fafc] px-5 py-4 text-[12px] text-[#344054]">
+        <div className="mt-4 space-y-2 border-y border-ui-line-soft bg-ui-surface-2 px-5 py-4 text-[12px] text-ui-ink-2">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[#667085]">Class</span>
-            <span className="font-medium text-[#172033]">{classLabel}</span>
+            <span className="text-ui-muted">Class</span>
+            <span className="font-medium text-ui-ink">{classLabel}</span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[#667085]">Subject</span>
-            <span className="font-medium text-[#172033]">{subjectLabel}</span>
+            <span className="text-ui-muted">Subject</span>
+            <span className="font-medium text-ui-ink">{subjectLabel}</span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[#667085]">Period</span>
-            <span className="font-medium text-[#172033]">P{periodLabel}</span>
+            <span className="text-ui-muted">Period</span>
+            <span className="font-medium text-ui-ink">P{periodLabel}</span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[#667085]">Total students</span>
-            <span className="font-medium text-[#172033]">{totalCount}</span>
+            <span className="text-ui-muted">Total students</span>
+            <span className="font-medium text-ui-ink">{totalCount}</span>
           </div>
           {/* <div className="flex items-center justify-between gap-3">
-            <span className="text-[#667085]">Present</span>
-            <span className="font-medium text-[#027a48]">{presentCount}</span>
+            <span className="text-ui-muted">Present</span>
+            <span className="font-medium text-ui-ok-text">{presentCount}</span>
           </div> */}
           <div className="flex items-center justify-between gap-3">
-            <span className="text-[#667085]">Absent</span>
-            <span className="font-medium text-[#b42318]">{absentCount}</span>
+            <span className="text-ui-muted">Absent</span>
+            <span className="font-medium text-ui-err-text">{absentCount}</span>
           </div>
         </div>
 
@@ -164,7 +164,7 @@ function SubmitConfirmDialog({
             type="button"
             onClick={onCancel}
             disabled={busy}
-            className="rounded-lg border border-[#d8dee8] bg-white px-4 py-2.5 text-[12px] font-medium text-[#344054] transition hover:bg-[#f8fafc] disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-2.5 text-[12px] font-medium text-ui-ink-2 transition hover:bg-ui-surface-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Go back
           </button>
@@ -172,7 +172,7 @@ function SubmitConfirmDialog({
             type="button"
             onClick={onConfirm}
             disabled={busy}
-            className="flex items-center justify-center gap-2 rounded-lg bg-[#172033] px-5 py-2.5 text-[12px] font-semibold text-white transition hover:bg-[#0f1626] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-[12px] font-semibold text-on-accent transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             <UserCheck size={15} />
             {busy ? "Submitting…" : "Confirm & submit"}
@@ -392,21 +392,21 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
         onClick={busy ? undefined : onClose}
       >
         <div
-          className="flex max-h-[94vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl border border-[#e8ebf1] bg-white shadow-xl sm:rounded-2xl"
+          className="flex max-h-[94vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-2xl border border-ui-line bg-ui-surface shadow-xl sm:rounded-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           {/* HEADER */}
-          <div className="flex items-start justify-between border-b border-[#eef1f5] px-5 py-4">
+          <div className="flex items-start justify-between border-b border-ui-line-soft px-5 py-4">
             <div className="min-w-0">
-              <span className="text-[10px] font-bold uppercase tracking-[0.13em] text-[#7a8497]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.13em] text-ui-muted-2">
                 Attendance session
               </span>
 
-              <h2 className="mt-1 truncate text-lg font-semibold tracking-[-0.02em] text-[#172033]">
+              <h2 className="mt-1 truncate text-lg font-semibold tracking-[-0.02em] text-ui-ink">
                 {session?.subject?.name || session?.subjectName || "Attendance"}
               </h2>
 
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-[#667085]">
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-ui-muted">
                 <span>{session?.standard?.name || session?.standardName || "—"}</span>
                 <span>•</span>
                 <span>
@@ -434,18 +434,18 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
               type="button"
               onClick={onClose}
               disabled={busy}
-              className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[#e4e7ec] text-[#667085] transition hover:bg-[#f8fafc] hover:text-[#172033] disabled:cursor-not-allowed disabled:opacity-50"
+              className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-ui-line-2 text-ui-muted transition hover:bg-ui-surface-2 hover:text-ui-ink disabled:cursor-not-allowed disabled:opacity-50"
             >
               <X size={17} />
             </button>
           </div>
 
           {/* STATUS BAR */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#eef1f5] bg-[#f8fafc] px-5 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ui-line-soft bg-ui-surface-2 px-5 py-3">
             <StatusBadge status={sessionStatus} />
 
             {!hideRoster && (
-              <div className="flex items-center gap-4 text-[11px] text-[#667085]">
+              <div className="flex items-center gap-4 text-[11px] text-ui-muted">
                 <span>{presentCount} present</span>
                 <span>{absentCount} absent</span>
                 <span>{students.length} total</span>
@@ -456,25 +456,25 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
           {/* BODY */}
           <div className="flex-1 overflow-y-auto">
             {loading && (
-              <div className="p-10 text-center text-[12px] text-[#98a2b3]">
+              <div className="p-10 text-center text-[12px] text-ui-faint">
                 Loading session…
               </div>
             )}
 
             {error && !loading && (
-              <div className="m-5 flex items-start gap-3 rounded-xl border border-[#fecdca] bg-[#fef3f2] p-4">
-                <AlertCircle size={18} className="mt-0.5 shrink-0 text-[#b42318]" />
+              <div className="m-5 flex items-start gap-3 rounded-xl border border-ui-err-line bg-ui-err-bg p-4">
+                <AlertCircle size={18} className="mt-0.5 shrink-0 text-ui-err-text" />
                 <div>
-                  <p className="text-[12px] font-semibold text-[#b42318]">
+                  <p className="text-[12px] font-semibold text-ui-err-text">
                     Couldn&apos;t load this session
                   </p>
-                  <p className="mt-1 text-[11px] leading-5 text-[#912018]">
+                  <p className="mt-1 text-[11px] leading-5 text-ui-err-text-strong">
                     {error.message || "Please try again."}
                   </p>
                   <button
                     type="button"
                     onClick={load}
-                    className="mt-3 rounded-lg border border-[#d8dee8] bg-white px-3 py-1.5 text-[11px] font-medium text-[#344054] transition hover:bg-[#f8fafc]"
+                    className="mt-3 rounded-lg border border-ui-line-strong bg-ui-surface px-3 py-1.5 text-[11px] font-medium text-ui-ink-2 transition hover:bg-ui-surface-2"
                   >
                     Retry
                   </button>
@@ -507,14 +507,14 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
 
             {/* Dedicated empty state for staff-leave / cancelled sessions */}
             {!loading && !error && hideRoster && (
-              <div className="m-5 rounded-2xl border border-[#e8ebf1] bg-[#f8fafc] p-8 text-center">
-                <Users size={26} className="mx-auto text-[#98a2b3]" />
-                <p className="mt-2 text-[12px] font-semibold text-[#172033]">
+              <div className="m-5 rounded-2xl border border-ui-line bg-ui-surface-2 p-8 text-center">
+                <Users size={26} className="mx-auto text-ui-faint" />
+                <p className="mt-2 text-[12px] font-semibold text-ui-ink">
                   {sessionStatus === "STAFF_LEAVE"
                     ? "No attendance for this period"
                     : "This session was cancelled"}
                 </p>
-                <p className="mt-1 text-[11px] text-[#667085]">
+                <p className="mt-1 text-[11px] text-ui-muted">
                   {sessionStatus === "STAFF_LEAVE"
                     ? "The assigned staff member is on leave, so attendance cannot be marked."
                     : "Cancelled sessions are not counted in attendance reports."}
@@ -527,12 +527,12 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
               !error &&
               !hideRoster &&
               students.length === 0 && (
-                <div className="m-5 rounded-2xl border border-[#e8ebf1] bg-[#f8fafc] p-8 text-center">
-                  <Users size={26} className="mx-auto text-[#98a2b3]" />
-                  <p className="mt-2 text-[12px] font-semibold text-[#172033]">
+                <div className="m-5 rounded-2xl border border-ui-line bg-ui-surface-2 p-8 text-center">
+                  <Users size={26} className="mx-auto text-ui-faint" />
+                  <p className="mt-2 text-[12px] font-semibold text-ui-ink">
                     No students found
                   </p>
-                  <p className="mt-1 text-[11px] text-[#667085]">
+                  <p className="mt-1 text-[11px] text-ui-muted">
                     This class currently has no students available for attendance.
                   </p>
                 </div>
@@ -552,21 +552,21 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
                         key={student.id}
                         className={`rounded-xl border p-4 transition ${
                           isAbsent
-                            ? "border-[#fecdca] bg-[#fef3f2]"
-                            : "border-[#e8ebf1] bg-white"
+                            ? "border-ui-err-line bg-ui-err-bg"
+                            : "border-ui-line bg-ui-surface"
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#f2f4f7] text-[11px] font-semibold text-[#667085]">
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ui-chip text-[11px] font-semibold text-ui-muted">
                             {index + 1}
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-[13px] font-semibold text-[#172033]">
+                            <p className="truncate text-[13px] font-semibold text-ui-ink">
                               {student.name}
                             </p>
 
-                            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[#667085]">
+                            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-ui-muted">
                               {student.rollNo != null && (
                                 <span>Roll No: {student.rollNo}</span>
                               )}
@@ -591,8 +591,8 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
                               }}
                               className={`w-full rounded-lg border px-3 py-2 text-[12px] outline-none transition ${
                                 isAbsent
-                                  ? "border-[#fda29b] bg-white text-[#b42318]"
-                                  : "border-[#d8dee8] bg-white text-[#172033]"
+                                  ? "border-ui-err-line-hover bg-ui-surface text-ui-err-text"
+                                  : "border-ui-line-strong bg-ui-surface text-ui-ink"
                               } disabled:cursor-not-allowed disabled:opacity-50`}
                             >
                               <option value="PRESENT">Present</option>
@@ -611,7 +611,7 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
                                   absenceTypeId: e.target.value || null,
                                 })
                               }
-                              className="w-full rounded-lg border border-[#d8dee8] bg-white px-3 py-2 text-[12px] text-[#172033] outline-none transition focus:border-[#667085] disabled:cursor-not-allowed disabled:opacity-50"
+                              className="w-full rounded-lg border border-ui-line-strong bg-ui-surface px-3 py-2 text-[12px] text-ui-ink outline-none transition focus:border-ui-muted disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               <option value="">Select absence type *</option>
                               {absenceTypes.map((type) => (
@@ -628,7 +628,7 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
                                 updateStudent(student.id, { remarks: e.target.value })
                               }
                               placeholder="Description required *"
-                              className="w-full rounded-lg border border-[#d8dee8] bg-white px-3 py-2 text-[12px] text-[#172033] outline-none transition placeholder:text-[#98a2b3] focus:border-[#667085] disabled:cursor-not-allowed disabled:opacity-50"
+                              className="w-full rounded-lg border border-ui-line-strong bg-ui-surface px-3 py-2 text-[12px] text-ui-ink outline-none transition placeholder:text-ui-faint focus:border-ui-muted disabled:cursor-not-allowed disabled:opacity-50"
                             />
                           </div>
                         )}
@@ -640,16 +640,16 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
           </div>
 
           {/* FOOTER */}
-          <div className="border-t border-[#eef1f5] bg-white px-5 py-4">
+          <div className="border-t border-ui-line-soft bg-ui-surface px-5 py-4">
             {submitError && (
-              <div className="mb-3 flex items-start gap-2 rounded-lg border border-[#fecdca] bg-[#fef3f2] px-3 py-2 text-[11px] text-[#b42318]">
+              <div className="mb-3 flex items-start gap-2 rounded-lg border border-ui-err-line bg-ui-err-bg px-3 py-2 text-[11px] text-ui-err-text">
                 <AlertCircle size={14} className="mt-0.5 shrink-0" />
                 <span>{submitError}</span>
               </div>
             )}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-[11px] text-[#667085]">
+              <div className="text-[11px] text-ui-muted">
                 {!isEditable
                   ? readOnlyReason?.title || "This session is read-only."
                   : absentCount > 0
@@ -664,7 +664,7 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
                   type="button"
                   onClick={onClose}
                   disabled={busy}
-                  className="rounded-lg border border-[#d8dee8] bg-white px-4 py-2.5 text-[12px] font-medium text-[#344054] transition hover:bg-[#f8fafc] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-lg border border-ui-line-strong bg-ui-surface px-4 py-2.5 text-[12px] font-medium text-ui-ink-2 transition hover:bg-ui-surface-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isEditable ? "Cancel" : "Close"}
                 </button>
@@ -674,7 +674,7 @@ export default function AttendanceSessionModal({ sessionId, onClose, onMarked })
                     type="button"
                     onClick={requestSubmit}
                     disabled={busy || loading || students.length === 0}
-                    className="flex items-center justify-center gap-2 rounded-lg bg-[#172033] px-5 py-2.5 text-[12px] font-semibold text-white transition hover:bg-[#0f1626] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-[12px] font-semibold text-on-accent transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <UserCheck size={15} />
                     Submit attendance
