@@ -1,4 +1,5 @@
 import CrudPage from "../../../shared/components/CrudPage";
+import P from "../../../shared/access/permissions";
 
 export default function Subjects() {
   return (
@@ -32,6 +33,7 @@ export default function Subjects() {
         { key: "credits", label: "Credits" }
       ]}
       createLabel="Subject"
+      permissions={{ create: P.SUBJECTS_CREATE, update: P.SUBJECTS_UPDATE, remove: P.SUBJECTS_DELETE }}
     />
   );
 }

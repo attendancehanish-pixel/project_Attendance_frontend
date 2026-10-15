@@ -5,11 +5,15 @@ import Modal from "../../../shared/components/Modal";
 import { Loading, ErrorState, Empty } from "../../../shared/components/State";
 import { timetableApi, periodApi } from "../../../features/attendance/api/attendance-setup.api";
 import { humanStatus } from "../../../shared/utils/format";
+import { useAuth } from "../../../shared/context/AuthContext";
+import P from "../../../shared/access/permissions";
 
 const DAYS=[["SUNDAY","SUNDAY"],["MONDAY","MONDAY"],["TUESDAY","TUESDAY"],["WEDNESDAY","WEDNESDAY"],["THURSDAY","THURSDAY"],["FRIDAY","FRIDAY"],["SATURDAY","SATURDAY"]];
 const DAY_NUM={SUNDAY:0,MONDAY:1,TUESDAY:2,WEDNESDAY:3,THURSDAY:4,FRIDAY:5,SATURDAY:6};
 
 export default function Timetable(){
+  const {hasPermission}=useAuth();
+  const canCreate=hasPermission(P.TIMETABLE_CREATE),canUpdate=hasPermission(P.TIMETABLE_UPDATE),canDelete=hasPermission(P.TIMETABLE_DELETE),canValidate=hasPermission(P.TIMETABLE_VALIDATE),canPublish=hasPermission(P.TIMETABLE_PUBLISH);
   const [years,setYears]=useState([]),[yearId,setYearId]=useState("");
   const [standards,setStandards]=useState([]),[standardId,setStandardId]=useState("");
   const [subjects,setSubjects]=useState([]),[periods,setPeriods]=useState([]),[weekly,setWeekly]=useState([]);
@@ -89,7 +93,7 @@ export default function Timetable(){
   if(!years.length&&!error)return <Loading/>;
   return <>
     <PageHeader title="Timetable" description="Configure the recurring weekly timetable separately from one-off date-specific schedules."
-      action={<div className="row-actions"><button className="button" onClick={validate} disabled={!yearId}>Validate</button><button className="button primary" onClick={publish} disabled={!yearId}>Publish</button></div>}/>
+      action={<div className="row-actions">{canValidate&&<button className="button" onClick={validate} disabled={!yearId}>Validate</button>}{canPublish&&<button className="button primary" onClick={publish} disabled={!yearId}>Publish</button>}</div>}/>
     <div className="toolbar timetable-toolbar">
       <label className="inline-label">Academic year<select value={yearId} onChange={e=>setYearId(e.target.value)}>{years.map(y=><option key={y.id} value={y.id}>{y.name}</option>)}</select></label>
       <label className="inline-label">Standard<select value={standardId} onChange={e=>setStandardId(e.target.value)}>{standards.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
@@ -101,23 +105,23 @@ export default function Timetable(){
     </div>
 
     {mode==="normal"?<div className="card">
-      <div className="table-headline"><div><span className="eyebrow">NORMAL_TIMETABLE</span><h3>{standards.find(s=>s.id===standardId)?.name||"Select a standard"}</h3></div><button className="button primary" disabled={!standardId} onClick={()=>openNormal(selectedDay)}>+ Add period</button></div>
+      <div className="table-headline"><div><span className="eyebrow">NORMAL_TIMETABLE</span><h3>{standards.find(s=>s.id===standardId)?.name||"Select a standard"}</h3></div>{canCreate&&<button className="button primary" disabled={!standardId} onClick={()=>openNormal(selectedDay)}>+ Add period</button>}</div>
       <div className="timetable-grid">
         {DAYS.map(([day])=>{const holiday=weekly.includes(day);const list=byDay.get(day)||[];return <div className={`day-column ${holiday?"weekly-holiday-column":""}`} key={day}>
-          <div className="day-header"><strong>{humanStatus(day)}</strong>{holiday&&<span className="status-badge">Weekly holiday</span>}<button className="text-button" onClick={()=>openNormal(day)}>+ Add</button></div>
+          <div className="day-header"><strong>{humanStatus(day)}</strong>{holiday&&<span className="status-badge">Weekly holiday</span>}{canCreate&&<button className="text-button" onClick={()=>openNormal(day)}>+ Add</button>}</div>
           {list.length===0?<div className="day-empty">{holiday?"No recurring periods":"No periods"}</div>:list.map(e=><div className="period-card" key={e.id}>
             <div className="period-index">P{e.period?.periodIndex??"?"}</div><div className="period-main"><strong>{e.subject?.name||e.subjectId}</strong><span>{e.period?.startTime||""} – {e.period?.endTime||""}</span></div>
             <div className="period-flags">{!e.attendanceRequired&&<span className="status-badge absent">No attendance</span>}</div>
-            <div className="row-actions"><button className="text-button" onClick={()=>{setEditing(e);setForm({weekday:e.weekday,periodId:e.periodId,subjectId:e.subjectId,attendanceRequired:e.attendanceRequired});setModal("normal")}}>Edit</button><button className="danger-text" onClick={()=>removeNormal(e.id)}>Delete</button></div>
+            <div className="row-actions">{canUpdate&&<button className="text-button" onClick={()=>{setEditing(e);setForm({weekday:e.weekday,periodId:e.periodId,subjectId:e.subjectId,attendanceRequired:e.attendanceRequired});setModal("normal")}}>Edit</button>}{canDelete&&<button className="danger-text" onClick={()=>removeNormal(e.id)}>Delete</button>}</div>
           </div>)}
         </div>})}
       </div>
       <div className="callout">Recurring entries describe the normal week. They are never converted into date-specific entries. A substitute teacher is handled separately and does not change this source.</div>
     </div>:<div className="card">
-      <div className="table-headline"><div><span className="eyebrow">DATE_SPECIFIC_TIMETABLE</span><h3>One-off schedule</h3></div><button className="button primary" disabled={!standardId} onClick={openDate}>+ Add date-specific period</button></div>
+      <div className="table-headline"><div><span className="eyebrow">DATE_SPECIFIC_TIMETABLE</span><h3>One-off schedule</h3></div>{canCreate&&<button className="button primary" disabled={!standardId} onClick={openDate}>+ Add date-specific period</button>}</div>
       <div className="toolbar"><label className="inline-label">Date<input type="date" value={selectedDate} onChange={e=>setSelectedDate(e.target.value)}/></label></div>
       {dateEntries.length===0?<Empty>No date-specific timetable entries for this standard on {selectedDate}.</Empty>:<div className="table-wrap"><table><thead><tr><th>Period</th><th>Subject</th><th>Time</th><th>Attendance</th><th>Actions</th></tr></thead><tbody>
-        {dateEntries.sort((a,b)=>(a.period?.periodIndex||999)-(b.period?.periodIndex||999)).map(e=><tr key={e.id}><td>P{e.period?.periodIndex??"?"}</td><td>{e.subject?.name||e.subjectId}</td><td>{e.period?.startTime||""} – {e.period?.endTime||""}</td><td>{e.attendanceRequired?"Required":"Not required"}</td><td><div className="row-actions"><button className="text-button" onClick={()=>{setEditing(e);setDateForm({calendarDate:selectedDate,periodId:e.periodId,subjectId:e.subjectId,attendanceRequired:e.attendanceRequired});setModal("date")}}>Edit</button><button className="danger-text" onClick={()=>removeDate(e.id)}>Delete</button></div></td></tr>)}
+        {dateEntries.sort((a,b)=>(a.period?.periodIndex||999)-(b.period?.periodIndex||999)).map(e=><tr key={e.id}><td>P{e.period?.periodIndex??"?"}</td><td>{e.subject?.name||e.subjectId}</td><td>{e.period?.startTime||""} – {e.period?.endTime||""}</td><td>{e.attendanceRequired?"Required":"Not required"}</td><td><div className="row-actions">{canUpdate&&<button className="text-button" onClick={()=>{setEditing(e);setDateForm({calendarDate:selectedDate,periodId:e.periodId,subjectId:e.subjectId,attendanceRequired:e.attendanceRequired});setModal("date")}}>Edit</button>}{canDelete&&<button className="danger-text" onClick={()=>removeDate(e.id)}>Delete</button>}</div></td></tr>)}
       </tbody></table></div>}
       <div className="callout">Use this for a special working Sunday, an examination-day schedule, or any other one-off timetable. The backend marks resulting attendance sessions as DATE_SPECIFIC_TIMETABLE.</div>
     </div>}

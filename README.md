@@ -51,3 +51,14 @@ src/
 ├── main.jsx
 └── styles.css
 ```
+
+## Permission-driven UI
+
+- Menus come from `src/shared/access/navigation.js`; an item is shown only if the user holds
+  one of its permissions.
+- Routes are wrapped in `RequirePermission` (see `src/App.jsx`); buttons use
+  `useAuth().hasPermission(...)` / `<Can>`.
+- New pages: **Users** (`/users`) and **Roles & Permissions** (`/roles`) with a grouped
+  permission picker that adds required read access automatically.
+- The user's permissions are re-read whenever the browser tab regains focus, so changes made
+  by an administrator show up without a re-login (the API enforces them immediately).

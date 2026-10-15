@@ -1,67 +1,13 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../shared/context/AuthContext";
+import { visibleNav } from "../shared/access/navigation";
 
-const sections = [
-  {
-    label: "Overview",
-    items: [{ to: "/dashboard", label: "Dashboard", icon: "⌂" }],
-  },
-   {
-    label: "Attendance Dashboard",
-    items: [
-      { to: "/admin/attendance", label: "Attendance Dashboard", icon: "▣" },
-      { to: "/attendance/generate", label: "Generate Sessions", icon: "⚡" },
-       { to: "/attendance/sessions", label: "Sessions", icon: "▤" },
-      // { to: "/configuration", label: "Configuration", icon: "⚙" },
-      // { to: "/calendar", label: "Calendar", icon: "◷" },
-      // { to: "/standards", label: "Standards", icon: "▤" },
-      // { to: "/subjects", label: "Subjects", icon: "◈" },
-    ],
-  },
-  {
-    label: "Academic",
-    items: [
-      { to: "/academic-years", label: "Academic Years", icon: "▣" },
-      { to: "/configuration", label: "Configuration", icon: "⚙" },
-      { to: "/calendar", label: "Calendar", icon: "◷" },
-      { to: "/standards", label: "Standards", icon: "▤" },
-      { to: "/subjects", label: "Subjects", icon: "◈" },
-    ],
-  },
-  {
-    label: "Students",
-    items: [
-      { to: "/students", label: "Students", icon: "♙" },
-      { to: "/student-enrollments", label: "Enrolment Report", icon: "▥" },
-      { to: "/student-enrollments/bulk-create", label: "Bulk Enrolment", icon: "＋" },
-    ],
-  },
-  {
-    label: "Operations",
-    items: [
-      { to: "/absence-types", label: "Absence Types", icon: "!" },
-      { to: "/timetable", label: "Timetable", icon: "▦", permission: "timetable.view" },
-      { to: "/attendance", label: "Attendance", icon: "✓", permission: "attendance.view" },
-      { to: "/attendance/corrections", label: "Corrections", icon: "↺", permission: "attendance.correct" },
-      { to: "/staff", label: "Staff", icon: "♟" },
-      { to: "/assignments", label: "Assignments", icon: "⇄" },
-    ],
-  },
-  {
-    label: "Reports",
-    items: [
-      { to: "/reports", label: "Reports", icon: "▥" },
-      { to: "/notifications", label: "Notifications", icon: "◉" },
-    ],
-  },
-];
-
-function Navigation({ canSee }) {
+function Navigation({ hasAny }) {
+  const sections = visibleNav(hasAny);
   return (
     <nav className="layout-nav">
       {sections.map((section) => {
-        const visibleItems = section.items.filter(canSee);
-        if (!visibleItems.length) return null;
+        const visibleItems = section.items;
 
         return (
           <div className="nav-section" key={section.label}>
@@ -84,10 +30,8 @@ function Navigation({ canSee }) {
 }
 
 export default function AdminLayout() {
-  const { user, logout, hasPermission, isAdmin } = useAuth();
+  const { user, logout, hasAny } = useAuth();
   const navigate = useNavigate();
-
-  const canSee = (item) => isAdmin || !item.permission || hasPermission(item.permission);
 
   async function handleLogout() {
     await logout();
@@ -105,7 +49,7 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <Navigation canSee={canSee} />
+        <Navigation hasAny={hasAny} />
 
         <div className="sidebar-footer">
           {/* Always visible (the nav above scrolls on short screens) */}
@@ -120,7 +64,7 @@ export default function AdminLayout() {
             <div className="avatar">{user?.name?.slice(0, 1)?.toUpperCase()}</div>
             <div>
               <strong>{user?.name}</strong>
-              <span>{user?.roles?.join(", ")}</span>
+              <span>{user?.roles?.length ? user.roles.join(", ") : "Custom access"}</span>
             </div>
           </div>
           <button className="ghost-button full" onClick={handleLogout}>Sign out</button>

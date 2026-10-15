@@ -34,11 +34,13 @@ const primaryItems = [
     to: "/students",
     label: "Students",
     icon: Users,
+    permission: "students.view",
   },
   {
     to: "/reports",
     label: "Reports",
     icon: BarChart3,
+    permission: "reports.attendance.view",
   },
   {
     to: "/settings",

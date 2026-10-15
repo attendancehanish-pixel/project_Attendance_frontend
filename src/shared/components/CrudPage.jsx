@@ -49,7 +49,9 @@ export default function CrudPage({
   endpoint,
   fields,
   columns,
-  createLabel = "New"
+  createLabel = "New",
+  // Permission names that gate each action, e.g. { create: "subjects.create", update: ..., remove: ... }
+  permissions
 }) {
   const [rows, setRows] = useState(null);
   const [error, setError] = useState(null);
@@ -57,7 +59,11 @@ export default function CrudPage({
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const isAdmin = useAuth().isAdmin;
+  const { isAdmin, hasPermission } = useAuth();
+  const can = (action) => (permissions?.[action] ? hasPermission(permissions[action]) : isAdmin);
+  const canCreate = can("create");
+  const canUpdate = can("update");
+  const canRemove = can("remove");
 
   async function load() {
     try {
@@ -120,7 +126,7 @@ export default function CrudPage({
       <PageHeader
         title={title}
         description={description}
-        action={ isAdmin &&
+        action={ canCreate &&
           <button className="button primary" onClick={() => open()}>
             + {createLabel}
           </button>
@@ -133,20 +139,26 @@ export default function CrudPage({
         <DataTable
           columns={[
             ...columns,
-            {
-              key: "actions",
-              label: "",
-              render: r => (
-                <div className="row-actions">
-                  <button className="text-button" onClick={() => open(r)}>
-                    Edit
-                  </button>
-                  <button className="danger-text" onClick={() => remove(r.id)}>
-                    Delete
-                  </button>
-                </div>
-              )
-            }
+            ...(canUpdate || canRemove
+              ? [{
+                  key: "actions",
+                  label: "",
+                  render: r => (
+                    <div className="row-actions">
+                      {canUpdate && (
+                        <button className="text-button" onClick={() => open(r)}>
+                          Edit
+                        </button>
+                      )}
+                      {canRemove && (
+                        <button className="danger-text" onClick={() => remove(r.id)}>
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                  )
+                }]
+              : [])
           ]}
           rows={rows}
         />

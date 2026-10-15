@@ -4,8 +4,17 @@ import PageHeader from "../../../shared/components/PageHeader";
 import DataTable from "../../../shared/components/DataTable";
 import Modal from "../../../shared/components/Modal";
 import { Loading, ErrorState, Empty } from "../../../shared/components/State";
+import { useAuth } from "../../../shared/context/AuthContext";
+import P from "../../../shared/access/permissions";
 
 export default function Standards() {
+  const { hasPermission } = useAuth();
+  const canCreateStandard = hasPermission(P.STANDARDS_CREATE);
+  const canEditStandard = hasPermission(P.STANDARDS_UPDATE);
+  const canDeleteStandard = hasPermission(P.STANDARDS_DELETE);
+  const canViewAllocations = hasPermission(P.SUBJECT_ALLOCATION_VIEW);
+  const canAllocate = hasPermission(P.SUBJECT_ALLOCATION_CREATE);
+  const canUnallocate = hasPermission(P.SUBJECT_ALLOCATION_DELETE);
   const [standards, setStandards] = useState(null);
   const [subjects, setSubjects] = useState([]);
   const [academicYears, setAcademicYears] = useState([]);
@@ -254,9 +263,11 @@ export default function Standards() {
         title="Standards / Classes"
         description="Manage classes/standards that students, subjects and timetables belong to."
         action={
-          <button className="button primary" onClick={openCreateModal}>
-            + New Standard
-          </button>
+          canCreateStandard && (
+            <button className="button primary" onClick={openCreateModal}>
+              + New Standard
+            </button>
+          )
         }
       />
 
@@ -301,9 +312,11 @@ export default function Standards() {
           title="No Standards Created"
           description="Create your first standard/class to start assigning subjects."
           action={
-            <button className="button primary" onClick={openCreateModal}>
-              Create Standard
-            </button>
+            canCreateStandard && (
+              <button className="button primary" onClick={openCreateModal}>
+                Create Standard
+              </button>
+            )
           }
         />
       ) : (
@@ -323,24 +336,30 @@ export default function Standards() {
               label: "Actions",
               render: r => (
                 <div className="row-actions">
-                  <button 
-                    className="text-button" 
-                    onClick={() => openDetailModal(r)}
-                  >
-                    View Subjects
-                  </button>
-                  <button 
-                    className="text-button" 
-                    onClick={() => openEditModal(r)}
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    className="danger-text" 
-                    onClick={() => handleDelete(r.id)}
-                  >
-                    Delete
-                  </button>
+                  {canViewAllocations && (
+                    <button 
+                      className="text-button" 
+                      onClick={() => openDetailModal(r)}
+                    >
+                      {canAllocate || canUnallocate ? "Manage Subjects" : "View Subjects"}
+                    </button>
+                  )}
+                  {canEditStandard && (
+                    <button 
+                      className="text-button" 
+                      onClick={() => openEditModal(r)}
+                    >
+                      Edit
+                    </button>
+                  )}
+                  {canDeleteStandard && (
+                    <button 
+                      className="danger-text" 
+                      onClick={() => handleDelete(r.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
               )
             }
@@ -397,7 +416,7 @@ export default function Standards() {
                       }}
                     >
                       {allocation.subject.name}
-                      <button
+                      {canUnallocate && <button
                         onClick={() => handleRemoveSubject(allocation.id)}
                         disabled={saving}
                         style={{
@@ -413,14 +432,15 @@ export default function Standards() {
                         title="Remove subject"
                       >
                         ×
-                      </button>
+                      </button>}
                     </span>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Select Subjects Grid */}
+            {/* Select Subjects Grid - only for users allowed to allocate subjects */}
+            {canAllocate && (<>
             <div style={{ marginBottom: '8px' }}>
               <h3 style={{ 
                 fontSize: '13px', 
@@ -569,6 +589,7 @@ export default function Standards() {
                 </div>
               </div>
             )}
+            </>)}
           </div>
         </Modal>
       )}

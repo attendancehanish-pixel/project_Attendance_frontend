@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { get, post, setAccessToken } from "../api/client";
 
 const AuthContext = createContext(null);
@@ -18,6 +18,28 @@ export function AuthProvider({ children }) {
       .catch(() => setAccessToken(null))
       .finally(() => setLoading(false));
   }, []);
+
+  // Re-read the signed-in user's roles/permissions. An administrator can change
+  // someone's access while they are logged in, so we refresh whenever the tab
+  // regains focus. The API enforces permissions on every request regardless.
+  const refreshUser = useCallback(async () => {
+    try {
+      const r = await get("/auth/me");
+      setUser(r.user);
+    } catch (e) {
+      if (e.status === 401) {
+        setAccessToken(null);
+        setUser(null);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!user) return undefined;
+    const onFocus = () => refreshUser();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [user?.id, refreshUser]);
 
   async function login(email, password) {
     const result = await post("/auth/login", { email, password });
@@ -46,16 +68,27 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
-  const value = useMemo(() => ({
-    user,
-    loading,
-    login,
-    logout,
-    changePassword,
-    endSession,
-    hasPermission: (permission) => Boolean(user?.permissions?.includes(permission)),
-    isAdmin: Boolean(user?.roles?.includes("ADMIN")),
-  }), [user, loading]);
+  const value = useMemo(() => {
+    const granted = new Set(user?.permissions || []);
+    const hasPermission = (permission) => granted.has(permission);
+    return {
+      user,
+      loading,
+      login,
+      logout,
+      changePassword,
+      endSession,
+      refreshUser,
+      hasPermission,
+      // true when the user holds at least one of the listed permissions
+      hasAny: (list = []) => list.length === 0 || list.some(hasPermission),
+      hasAll: (list = []) => list.every(hasPermission),
+      isAdmin: Boolean(user?.roles?.includes("ADMIN")),
+      // "admin" = management portal (sidebar limited to granted menus),
+      // "staff" = teacher portal. Decided by the API from the permissions.
+      portal: user?.portal === "admin" ? "admin" : "staff",
+    };
+  }, [user, loading, refreshUser]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -1,0 +1,36 @@
+.perm-picker { display: grid; gap: 12px; }
+.perm-presets { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.perm-presets > span { font-size: 11px; color: var(--ui-muted); font-weight: 700; }
+.perm-chip {
+  border: 1px solid var(--ui-line-strong); background: var(--ui-surface); color: var(--ui-ink-2);
+  border-radius: 999px; padding: 5px 11px; font-size: 11px; font-weight: 650; cursor: pointer;
+}
+.perm-chip:hover { background: var(--ui-surface-2); }
+.perm-groups { display: grid; gap: 10px; max-height: 340px; overflow-y: auto; padding-right: 4px; }
+.perm-group { border: 1px solid var(--ui-line); border-radius: 10px; background: var(--ui-surface); }
+.perm-group-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 12px; border-bottom: 1px solid var(--ui-line-soft);
+}
+.perm-group-head strong { font-size: 12px; color: var(--ui-ink); }
+.perm-group-head button { font-size: 11px; color: var(--ui-muted); background: none; border: 0; cursor: pointer; }
+.perm-group-head button:hover { color: var(--ui-ink); }
+.perm-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 2px 14px; padding: 8px 12px 10px; }
+.perm-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--ui-ink-3); padding: 4px 0; }
+.perm-item input { margin-top: 2px; }
+.perm-item.locked { color: var(--ui-muted); }
+.perm-item small { display: block; color: var(--ui-faint); font-size: 10px; }
+.perm-summary { font-size: 11px; color: var(--ui-muted); }
+.role-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+.role-pill { padding: 3px 8px; border-radius: 999px; background: var(--ui-chip-2); color: var(--ui-ink-3); font-size: 10px; font-weight: 700; }
+.role-pill.custom { background: var(--ui-warn-bg); color: var(--ui-warn-text); }
+.role-checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.role-check {
+  display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--ui-line-strong);
+  border-radius: 8px; padding: 6px 10px; font-size: 12px; color: var(--ui-ink-2); background: var(--ui-surface);
+}
+.role-check.on { border-color: var(--ui-ok-text); background: var(--ui-ok-bg); }
+.modal.wide { width: min(780px, 94vw); max-height: 92vh; overflow-y: auto; }
+.form-section { display: grid; gap: 8px; }
+.form-section > h4 { margin: 0; font-size: 12px; color: var(--ui-ink); }
+.access-note { font-size: 11px; color: var(--ui-muted); margin: 0; }

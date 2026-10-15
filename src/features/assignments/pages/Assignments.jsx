@@ -4,8 +4,14 @@ import PageHeader from "../../../shared/components/PageHeader";
 import DataTable from "../../../shared/components/DataTable";
 import Modal from "../../../shared/components/Modal";
 import { Loading, ErrorState, Empty } from "../../../shared/components/State";
+import { useAuth } from "../../../shared/context/AuthContext";
+import P from "../../../shared/access/permissions";
 
 export default function Assignments() {
+  const { hasPermission } = useAuth();
+  const canAssign = hasPermission(P.STAFF_ASSIGNMENT_CREATE);
+  const canChange = hasPermission(P.STAFF_ASSIGNMENT_UPDATE);
+  const canRemove = hasPermission(P.STAFF_ASSIGNMENT_DELETE);
   const [matrixData, setMatrixData] = useState(null);
   const [academicYears, setAcademicYears] = useState([]);
   const [availableStaff, setAvailableStaff] = useState([]);
@@ -244,19 +250,21 @@ export default function Assignments() {
                       <span style={{ fontWeight: '500', color: 'var(--ui-ok-text)' }}>
                         {r.staffName}
                       </span>
-                      <button
-                        className="danger-text"
-                        onClick={() => handleRemoveStaff(r.assignmentId)}
-                        disabled={saving}
-                        style={{ fontSize: '12px' }}
-                      >
-                        Remove
-                      </button>
+                      {canRemove && (
+                        <button
+                          className="danger-text"
+                          onClick={() => handleRemoveStaff(r.assignmentId)}
+                          disabled={saving}
+                          style={{ fontSize: '12px' }}
+                        >
+                          Remove
+                        </button>
+                      )}
                     </>
                   ) : (
                     <span style={{ color: 'var(--ui-faint)' }}>Not assigned</span>
                   )}
-                  <button
+                  {(r.isAssigned ? canChange : canAssign) && <button
                     className="button"
                     onClick={() => openStaffModal(r)}
                     disabled={saving}
@@ -267,7 +275,7 @@ export default function Assignments() {
                     }}
                   >
                     {r.isAssigned ? 'Change' : 'Assign'}
-                  </button>
+                  </button>}
                 </div>
               )
             }

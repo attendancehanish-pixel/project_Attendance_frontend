@@ -8,6 +8,7 @@ import "./styles.css";
 import "./layouts/layout.css";
 import "./features/students/styles.css";
 import "./features/attendance/styles.css";
+import "./features/users/styles.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -66,7 +66,8 @@ function applyTheme(theme) {
 const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  const { user, isAdmin } = useAuth();
+  const { user, portal } = useAuth();
+  const isAdmin = portal === "admin";
   const userId = user?.id ?? null;
 
   const roleDefault = useMemo(() => defaultThemeFor(isAdmin), [isAdmin]);

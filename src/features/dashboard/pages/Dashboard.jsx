@@ -1,44 +1,66 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { get } from "../../../shared/api/client";
 import PageHeader from "../../../shared/components/PageHeader";
 import { Loading, ErrorState } from "../../../shared/components/State";
 import { dateOnly, humanStatus } from "../../../shared/utils/format";
+import { useAuth } from "../../../shared/context/AuthContext";
+import P from "../../../shared/access/permissions";
+import { visibleNav } from "../../../shared/access/navigation";
 
 export default function Dashboard() {
-  const [years, setYears] = useState(null);
+  const { user, hasPermission, hasAny } = useAuth();
+  const canSeeYears = hasPermission(P.ACADEMIC_YEAR_VIEW);
+  const [years, setYears] = useState(canSeeYears ? null : []);
   const [error, setError] = useState(null);
 
   async function load() {
+    if (!canSeeYears) return;
     try { setError(null); setYears((await get("/academic-years")).data || []); }
     catch (e) { setError(e); }
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [canSeeYears]);
 
-  if (!years) return <Loading />;
   if (error) return <ErrorState error={error} onRetry={load} />;
+  if (!years) return <Loading />;
 
   const active = years.find((x) => x.status === "ACTIVE");
+  // Everything this person can open, except the dashboard itself.
+  const links = visibleNav(hasAny)
+    .map((section) => ({ ...section, items: section.items.filter((i) => i.to !== "/dashboard") }))
+    .filter((section) => section.items.length > 0);
+
   return (
     <>
-      <PageHeader title="Dashboard" description="A quick view of your academic setup and attendance operations." />
-      <div className="hero">
-        <div>
-          <span className="eyebrow">Current academic year</span>
-          <h2>{active?.name || "No active academic year"}</h2>
-          {active && <p>{dateOnly(active.startDate)} — {dateOnly(active.endDate)}</p>}
+      <PageHeader title={`Welcome, ${user?.name?.split(" ")[0] || ""}`} description="Here is what you can work on with your account." />
+
+      {canSeeYears && (
+        <div className="hero">
+          <div>
+            <span className="eyebrow">Current academic year</span>
+            <h2>{active?.name || "No active academic year"}</h2>
+            {active && <p>{dateOnly(active.startDate)} — {dateOnly(active.endDate)}</p>}
+          </div>
+          <span className={`status-badge ${String(active?.status || "draft").toLowerCase()}`}>{humanStatus(active?.status || "DRAFT")}</span>
         </div>
-        <span className={`status-badge ${String(active?.status || "draft").toLowerCase()}`}>{humanStatus(active?.status || "DRAFT")}</span>
-      </div>
-      <div className="stat-grid">
-        <div className="stat-card"><span>Academic years</span><strong>{years.length}</strong><small>Historical + current</small></div>
-        <div className="stat-card"><span>Active year</span><strong>{active ? "1" : "0"}</strong><small>Only one should normally be active</small></div>
-        <div className="stat-card"><span>Attendance</span><strong>Ready</strong><small>Session-based marking</small></div>
-        <div className="stat-card"><span>Audit</span><strong>Enabled</strong><small>Corrections remain traceable</small></div>
-      </div>
-      <div className="info-grid">
-        <div className="card"><h3>Recommended workflow</h3><ol className="steps"><li>Create academic year</li><li>Configure calendar and weekly offs</li><li>Create standards and subjects</li><li>Assign staff and timetable</li><li>Generate sessions and mark attendance</li></ol></div>
-        <div className="card"><h3>Backend status</h3><p className="muted">This frontend is connected to the MVP API. Modules that are still scaffolded by the backend are shown as unavailable until their endpoints are implemented.</p></div>
-      </div>
+      )}
+
+      {links.length === 0 ? (
+        <div className="card"><p className="muted">Your account does not have access to any sections yet. Ask an administrator to assign permissions.</p></div>
+      ) : (
+        <div className="info-grid">
+          {links.map((section) => (
+            <div className="card" key={section.label}>
+              <h3>{section.label}</h3>
+              <ul className="steps" style={{ listStyle: "none", paddingLeft: 0 }}>
+                {section.items.map((item) => (
+                  <li key={item.to}><Link to={item.to}>{item.label}</Link></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

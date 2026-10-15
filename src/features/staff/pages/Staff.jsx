@@ -5,8 +5,13 @@ import PageHeader from "../../../shared/components/PageHeader";
 import DataTable from "../../../shared/components/DataTable";
 import Modal from "../../../shared/components/Modal";
 import { Loading, ErrorState, Empty } from "../../../shared/components/State";
+import { useAuth } from "../../../shared/context/AuthContext";
+import P from "../../../shared/access/permissions";
 
 export default function Staff() {
+  const { hasPermission } = useAuth();
+  const canCreate = hasPermission(P.STAFF_CREATE);
+  const canUpdate = hasPermission(P.STAFF_UPDATE);
   const [rows, setRows] = useState(null);
   const [error, setError] = useState(null);
   const [modal, setModal] = useState(false);
@@ -99,9 +104,11 @@ export default function Staff() {
         title="Staff"
         description="Create and manage staff accounts. Staff members are linked to user accounts for authentication and permissions."
         action={
-          <button className="button primary" onClick={() => open()}>
-            + Staff
-          </button>
+          canCreate && (
+            <button className="button primary" onClick={() => open()}>
+              + Staff
+            </button>
+          )
         }
       />
 
@@ -147,15 +154,17 @@ export default function Staff() {
                 );
               }
             },
-            {
-              key: "actions",
-              label: "",
-              render: (r) => (
-                <button className="text-button" onClick={() => open(r)}>
-                  Edit
-                </button>
-              )
-            }
+            ...(canUpdate
+              ? [{
+                  key: "actions",
+                  label: "",
+                  render: (r) => (
+                    <button className="text-button" onClick={() => open(r)}>
+                      Edit
+                    </button>
+                  )
+                }]
+              : [])
           ]}
           rows={rows}
         />
@@ -258,8 +267,8 @@ export default function Staff() {
             </label>
 
             <div className="callout">
-              <strong>Note:</strong> Staff role assignment should be handled through the RBAC/role-management API. 
-              Upon creation, the STAFF role is automatically assigned.
+              <strong>Note:</strong> New staff receive the STAFF role (teacher access). To give this person
+              extra responsibilities, open them on the Users page and choose roles or specific permissions.
             </div>
 
             <div className="modal-actions">
