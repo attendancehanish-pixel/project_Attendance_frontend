@@ -40,6 +40,7 @@ export const adminNav = [
     label: "Students",
     items: [
       { to: "/students", label: "Students", icon: "♙", any: [P.STUDENTS_VIEW] },
+      { to: "/students/bulk-create", label: "Bulk Add Students", icon: "＋", any: [P.STUDENTS_CREATE] },
       { to: "/student-enrollments", label: "Enrolment Report", icon: "▥", any: [P.STUDENTS_ENROLL] },
       { to: "/student-enrollments/bulk-create", label: "Bulk Enrolment", icon: "＋", any: [P.STUDENTS_ENROLL] },
       { to: "/absence-types", label: "Absence Types", icon: "!", any: [P.ABSENCE_TYPE_VIEW] },

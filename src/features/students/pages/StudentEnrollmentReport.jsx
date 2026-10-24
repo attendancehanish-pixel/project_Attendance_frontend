@@ -5,11 +5,13 @@ import PageHeader from "../../../shared/components/PageHeader";
 import DataTable from "../../../shared/components/DataTable";
 import { Loading, ErrorState, Empty } from "../../../shared/components/State";
 import { humanStatus } from "../../../shared/utils/format";
-import { Link } from "react-router-dom";
+import { useDebouncedValue } from "../../../shared/hooks/useDebouncedValue";
+import { Link, useLocation } from "react-router-dom";
 
 const statusOptions = ["ENROLLED", "PROMOTED", "GRADUATED", "WITHDRAWN"];
 
 export default function StudentEnrollmentReport() {
+  const flash = useLocation().state?.flash;
   const [years, setYears] = useState([]);
   const [standards, setStandards] = useState([]);
   const [yearId, setYearId] = useState("");
@@ -19,6 +21,8 @@ export default function StudentEnrollmentReport() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [firstLoad, setFirstLoad] = useState(true);
+  const dSearch = useDebouncedValue(search, 400);
 
   async function loadFilters() {
     const [y, s] = await Promise.all([get("/academic-years"), get("/standards")]);
@@ -36,11 +40,11 @@ export default function StudentEnrollmentReport() {
       const res = await studentEnrollmentApi.list({ academicYearId: yearId, standardId, status, search });
       setRows(res.data || []);
     } catch (e) { setError(e); }
-    finally { setLoading(false); }
+    finally { setLoading(false); setFirstLoad(false); }
   }
 
   useEffect(() => { loadFilters().catch(setError); }, []);
-  useEffect(() => { if (yearId) loadRows(); }, [yearId, standardId, status]);
+  useEffect(() => { if (yearId) loadRows(); }, [yearId, standardId, status, dSearch]);
 
   const counts = useMemo(() => ({
     total: rows.length,
@@ -49,15 +53,17 @@ export default function StudentEnrollmentReport() {
     withdrawn: rows.filter(r => r.status === "WITHDRAWN").length,
   }), [rows]);
 
-  if (loading && !rows.length && !error) return <Loading />;
-  if (error && !rows.length) return <ErrorState error={error} onRetry={loadRows} />;
+  if (firstLoad && loading && !error) return <Loading />;
+  if (error && firstLoad) return <ErrorState error={error} onRetry={loadRows} />;
 
   return <>
     <PageHeader
       title="Student Enrolments"
       description="View and manage student placement for an academic year and class."
-      action={<Link className="button primary" to="/student-enrollment/bulk">+ Bulk enrol students</Link>}
+      action={<Link className="button primary" to="/student-enrollments/bulk-create">+ Bulk enrol students</Link>}
     />
+
+    {flash && <div className="form-alert success">{flash}</div>}
 
     <section className="enrollment-toolbar">
       <div className="filter-group">
@@ -82,7 +88,7 @@ export default function StudentEnrollmentReport() {
         <label className="search-field">Search
           <input value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === "Enter" && loadRows()} placeholder="Admission no. or student name" />
         </label>
-        <button className="button" onClick={loadRows}>Search</button>
+        <button className="button" onClick={loadRows} disabled={loading}>{loading ? "Searching…" : "Search"}</button>
       </div>
     </section>
 
@@ -103,7 +109,7 @@ export default function StudentEnrollmentReport() {
         {key:"student",label:"Student",render:r=><div><strong>{r.student?.name || "—"}</strong><small className="table-secondary">{r.student?.email || ""}</small></div>},
         {key:"standard",label:"Class",render:r=>r.standard?.name || r.standard?.code || "—"},
         {key:"status",label:"Status",render:r=><span className={`status-badge ${String(r.status||"").toLowerCase()}`}>{humanStatus(r.status)}</span>},
-        {key:"actions",label:"",render:r=><Link className="text-button" to={`/student-enrollment/edit/${r.id}`}>Edit</Link>}
+        {key:"actions",label:"",render:r=><Link className="text-button" to={`/student-enrollments/${r.id}/edit`}>Edit</Link>}
       ]} rows={rows} />}
     </section>
   </>;

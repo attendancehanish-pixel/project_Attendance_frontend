@@ -34,3 +34,45 @@
 .danger-outline{border:1px solid var(--ui-err-line);background:var(--ui-surface);color:var(--ui-err-text);border-radius:8px;padding:9px 13px;font-size:11px;font-weight:700}
 @media(max-width:1000px){.filter-group{grid-template-columns:repeat(2,1fr)}.enrollment-stat-grid{grid-template-columns:repeat(2,1fr)}.edit-enrollment-layout{grid-template-columns:1fr}}
 @media(max-width:650px){.bulk-context-grid{grid-template-columns:1fr}.bulk-row{grid-template-columns:30px 1fr 100px 35px}.bulk-footer{align-items:stretch;flex-direction:column;gap:10px}.bulk-footer>div{justify-content:flex-end}.filter-group{grid-template-columns:1fr}.enrollment-stat-grid{grid-template-columns:1fr 1fr}.read-only-grid{grid-template-columns:1fr}}
+
+/* Students page + bulk student creation */
+.header-actions{display:flex;gap:8px}
+.student-filter{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.student-filter label{display:grid;gap:6px;font-size:11px;font-weight:700;color:var(--ui-ink-3)}
+.student-filter input,.student-filter select{margin:0}
+.req{color:var(--ui-err-text)}
+.field-error{display:block;color:var(--ui-err-text);font-size:10px;margin-top:3px;font-weight:600}
+input.invalid,select.invalid{border-color:var(--ui-err-line)!important}
+.sb-grid{display:grid;grid-template-columns:36px 1.1fr 1.6fr 1.5fr 1.1fr 150px;gap:10px;align-items:start;padding:9px 12px}
+.sb-head{background:var(--ui-surface-2);border:1px solid var(--ui-line);border-radius:10px 10px 0 0;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:750;color:var(--ui-muted);align-items:center}
+.sb-row{border:1px solid var(--ui-line);border-top:0;align-items:center;font-size:12px;position:relative}
+.sb-row.editing,.sb-entry{background:var(--ui-surface-2)}
+.sb-entry{border-radius:0 0 10px 10px}
+.sb-row.has-error{background:var(--ui-err-bg)}
+.sb-row-error{grid-column:2 / -1;color:var(--ui-err-text);font-size:11px;font-weight:600}
+.sb-cell input{margin:0;width:100%}
+.sb-actions{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+.sb-hint{font-size:10px;color:var(--ui-faint);margin:10px 0 0}
+.sb-hint kbd{border:1px solid var(--ui-line);border-radius:4px;padding:0 4px;font-size:10px}
+.muted{color:var(--ui-muted)}
+.sb-row>*{min-width:0;overflow-wrap:anywhere}
+@media(max-width:800px){.sb-grid{grid-template-columns:28px 1fr 1fr}.sb-head{display:none}.sb-actions{grid-column:1 / -1}.student-filter{grid-template-columns:1fr}.sb-row>.muted{grid-column:span 1}}
+
+/* Bulk enrolment with type-ahead */
+.eb-grid{display:grid;grid-template-columns:36px 1.4fr 1.4fr 120px 150px;gap:10px;align-items:center;padding:9px 12px}
+.eb-head{background:var(--ui-surface-2);border:1px solid var(--ui-line);border-radius:10px 10px 0 0;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:750;color:var(--ui-muted)}
+.eb-row{border:1px solid var(--ui-line);border-top:0;font-size:12px}
+.eb-row.has-error{background:var(--ui-err-bg)}
+.eb-row input{margin:0;width:100%}
+.eb-entry{background:var(--ui-surface-2);border-radius:0 0 10px 10px}
+.eb-search{position:relative}
+.eb-spinner{position:absolute;right:10px;top:50%;width:12px;height:12px;margin-top:-6px;border:2px solid var(--ui-line);border-top-color:var(--accent);border-radius:50%;animation:ebspin .7s linear infinite}
+@keyframes ebspin{to{transform:rotate(360deg)}}
+.eb-dropdown{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 4px);margin:0;padding:4px;list-style:none;background:var(--ui-surface);border:1px solid var(--ui-line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.14);max-height:280px;overflow:auto}
+.eb-dropdown li{display:flex;gap:10px;align-items:baseline;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:12px}
+.eb-dropdown li.active{background:var(--ui-chip)}
+.eb-dropdown li.disabled{opacity:.55;cursor:not-allowed}
+.eb-dropdown li em{margin-left:auto;font-style:normal;font-size:10px;color:var(--ui-warn-text)}
+.eb-dropdown li.eb-empty{cursor:default;color:var(--ui-muted)}.eb-dropdown li.eb-empty.error{color:var(--ui-err-text)}
+.eb-picked{font-weight:700}
+@media(max-width:800px){.eb-grid{grid-template-columns:28px 1fr 90px}.eb-head{display:none}.eb-grid>.sb-actions{grid-column:1 / -1}}

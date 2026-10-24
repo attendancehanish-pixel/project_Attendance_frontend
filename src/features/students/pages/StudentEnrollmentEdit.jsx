@@ -15,12 +15,12 @@ export default function StudentEnrollmentEdit() {
   async function load(){ try { setError(""); const res=await studentEnrollmentApi.getById(id); const r=res.data; setRecord(r); setRollNo(r.rollNo||""); setStatus(r.status||"ENROLLED"); } catch(e){setError(e.message);} finally{setLoading(false);} }
   useEffect(()=>{load();},[id]);
 
-  async function save(e){ e.preventDefault(); setSaving(true); setError(""); try{await studentEnrollmentApi.update(id,{rollNo:rollNo.trim(),status}); navigate("/student-enrollment");}catch(e){setError(e.message);}finally{setSaving(false);} }
-  async function remove(){ if(!window.confirm("Remove this enrollment? If attendance history exists, the backend will reject the operation."))return; try{await studentEnrollmentApi.remove(id);navigate("/student-enrollment");}catch(e){setError(e.message);} }
+  async function save(e){ e.preventDefault(); setSaving(true); setError(""); try{await studentEnrollmentApi.update(id,{rollNo:rollNo.trim(),status}); navigate("/student-enrollments");}catch(e){setError(e.message);}finally{setSaving(false);} }
+  async function remove(){ if(!window.confirm("Remove this enrollment? If attendance history exists, the backend will reject the operation."))return; try{await studentEnrollmentApi.remove(id);navigate("/student-enrollments");}catch(e){setError(e.message);} }
 
   if(loading)return <Loading/>; if(!record)return <ErrorState error={error||"Enrollment not found"} onRetry={load}/>;
   return <>
-    <PageHeader title="Edit enrollment" description="Update the roll number or enrollment status. Student, academic year and class are read-only." action={<Link className="button" to="/student-enrollment">← Back to report</Link>}/>
+    <PageHeader title="Edit enrollment" description="Update the roll number or enrollment status. Student, academic year and class are read-only." action={<Link className="button" to="/student-enrollments">← Back to report</Link>}/>
     {error&&<div className="form-alert error">{error}</div>}
     <section className="edit-enrollment-layout">
       <div className="card">

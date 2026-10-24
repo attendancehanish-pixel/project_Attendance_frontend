@@ -17,6 +17,7 @@ import Standards from "./features/academic/pages/Standards";
 import Subjects from "./features/academic/pages/Subjects";
 
 import Students from "./features/students/pages/Students";
+import StudentBulkCreate from "./features/students/pages/StudentBulkCreate";
 import StudentEnrollmentReport from "./features/students/pages/StudentEnrollmentReport";
 import StudentEnrollmentBulkCreate from "./features/students/pages/StudentEnrollmentBulkCreate";
 import StudentEnrollmentEdit from "./features/students/pages/StudentEnrollmentEdit";
@@ -111,6 +112,10 @@ export default function App() {
           {Guard({
             any: [P.STUDENTS_VIEW],
             children: <Route path="/students" element={isManager ? <Students /> : <StaffStudentsPage />} />,
+          })}
+          {Guard({
+            any: [P.STUDENTS_CREATE], portal: "admin",
+            children: <Route path="/students/bulk-create" element={<StudentBulkCreate />} />,
           })}
           {Guard({
             any: [P.STUDENTS_ENROLL], portal: "admin",
