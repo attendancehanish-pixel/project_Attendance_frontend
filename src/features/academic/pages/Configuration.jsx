@@ -203,42 +203,48 @@ export default function Configuration() {
   /* Save config                                                            */
   /* ---------------------------------------------------------------------- */
 
+  // Sends the configuration (and outline) currently shown on screen to the
+  // server. Shared by "Save configuration" and "Re-generate periods" so a
+  // re-generation always reflects what the admin sees.
+  async function persistConfig() {
+    const r = await periodConfigurationApi.upsert(yearId, {
+      totalPeriodCount: Number(config.totalPeriodCount),
+
+      defaultDurationMinutes:
+        config.defaultDurationMinutes === "" || config.defaultDurationMinutes == null
+          ? null
+          : Number(config.defaultDurationMinutes),
+
+      isDurationDefault: Boolean(config.isDurationDefault),
+
+      sameOutlineForAllDays: Boolean(config.sameOutlineForAllDays),
+
+      firstPeriodStartTime: config.firstPeriodStartTime || null,
+
+      defaultBreakMinutes:
+        config.defaultBreakMinutes === "" || config.defaultBreakMinutes == null
+          ? null
+          : Number(config.defaultBreakMinutes),
+
+      outline: config.sameOutlineForAllDays
+        ? outline.map((p) => ({
+          periodIndex: Number(p.periodIndex),
+          startTime: p.startTime,
+          durationMinutes: Number(p.durationMinutes),
+          breakAfterMinutes: Number(p.breakAfterMinutes || 0),
+        }))
+        : [],
+    });
+
+    setConfig(r.data || r);
+  }
+
   async function saveConfig(e) {
     e.preventDefault();
     setSaving(true);
 
     try {
-      const r = await periodConfigurationApi.upsert(yearId, {
-        totalPeriodCount: Number(config.totalPeriodCount),
-
-        defaultDurationMinutes:
-          config.defaultDurationMinutes === ""
-            ? null
-            : Number(config.defaultDurationMinutes),
-
-        isDurationDefault: Boolean(config.isDurationDefault),
-
-        sameOutlineForAllDays: Boolean(config.sameOutlineForAllDays),
-
-        firstPeriodStartTime: config.firstPeriodStartTime || null,
-
-        defaultBreakMinutes:
-          config.defaultBreakMinutes === ""
-            ? null
-            : Number(config.defaultBreakMinutes),
-
-        outline: config.sameOutlineForAllDays
-          ? outline.map((p) => ({
-            periodIndex: Number(p.periodIndex),
-            startTime: p.startTime,
-            durationMinutes: Number(p.durationMinutes),
-            breakAfterMinutes: Number(p.breakAfterMinutes || 0),
-          }))
-          : [],
-      });
-
-      setConfig(r.data || r);
-
+      await persistConfig();
       await load();
     } catch (e) {
       alert(e.message);
@@ -336,6 +342,9 @@ export default function Configuration() {
   /* Generate                                                               */
   /* ---------------------------------------------------------------------- */
 
+  // Periods already exist -> this run is a RE-generation of the schedule.
+  const hasPeriods = periods.length > 0;
+
   async function generate() {
     if (!config) return;
 
@@ -344,22 +353,15 @@ export default function Configuration() {
       return;
     }
 
-    if (
-      !confirm(
-        "Generate periods from this configuration? Existing timetable/attendance-linked periods cannot be replaced."
-      )
-    ) {
-      return;
-    }
-
     setGenerating(true);
 
     try {
-      await periodApi.generate(yearId, {
-        weekdays: DAYS.map(([value]) => value),
-        replaceExisting: false,
-        sameOutlineForAllDays: Boolean(config.sameOutlineForAllDays),
+      // 1. Make sure the server has exactly what is on screen.
+      await persistConfig();
 
+      const payload = {
+        weekdays: DAYS.map(([value]) => value),
+        sameOutlineForAllDays: Boolean(config.sameOutlineForAllDays),
         outline: config.sameOutlineForAllDays
           ? outline.map((period) => ({
             periodIndex: Number(period.periodIndex),
@@ -368,7 +370,68 @@ export default function Configuration() {
             breakAfterMinutes: Number(period.breakAfterMinutes || 0),
           }))
           : undefined,
-      });
+      };
+
+      // 2. Preview what would change (nothing is written yet).
+      const plan = (await periodApi.generate(yearId, { ...payload, dryRun: true })).data;
+
+      if (plan.blocked?.length) {
+        const first = plan.blocked[0];
+        alert(
+          `The new schedule removes P${first.periodIndex} on ${humanStatus(first.weekday)}, ` +
+          `but attendance, substitution, leave or exception data already uses it` +
+          `${plan.blocked.length > 1 ? ` (and ${plan.blocked.length - 1} more period(s))` : ""}.\n\n` +
+          `Keep at least that many periods per day, or clear that data first.`
+        );
+        return;
+      }
+
+      const { create, update, unchanged, remove } = plan.summary;
+
+      if (!create && !update && !remove) {
+        alert("Periods already match this schedule. Nothing to change.");
+        return;
+      }
+
+      const summaryLines = [
+        update ? `• ${update} period timing(s) will be updated (timetable links are kept)` : null,
+        create ? `• ${create} new period(s) will be added` : null,
+        remove ? `• ${remove} surplus period(s) will be removed` : null,
+        unchanged ? `• ${unchanged} period(s) stay as they are` : null,
+      ].filter(Boolean);
+
+      if (!confirm(`${hasPeriods ? "Re-generate" : "Generate"} periods?\n\n${summaryLines.join("\n")}`)) {
+        return;
+      }
+
+      // 3. Removing periods that already hold timetable entries needs an explicit OK.
+      let removeObsoleteTimetable = false;
+
+      if (plan.requiresTimetableRemoval?.length) {
+        const count = plan.requiresTimetableRemoval.reduce(
+          (sum, p) => sum + p.timetableEntries + p.dateTimetableEntries,
+          0
+        );
+        const where = plan.requiresTimetableRemoval
+          .slice(0, 5)
+          .map((p) => `P${p.periodIndex} ${humanStatus(p.weekday)}`)
+          .join(", ");
+
+        if (
+          !confirm(
+            `The new schedule has fewer periods than before. ${count} timetable entr${count === 1 ? "y" : "ies"} ` +
+            `in the removed periods (${where}${plan.requiresTimetableRemoval.length > 5 ? ", …" : ""}) ` +
+            `will be permanently deleted and must be set again.\n\nContinue?`
+          )
+        ) {
+          return;
+        }
+
+        removeObsoleteTimetable = true;
+      }
+
+      // 4. Apply.
+      await periodApi.generate(yearId, { ...payload, removeObsoleteTimetable });
 
       await load();
     } catch (e) {
@@ -487,9 +550,19 @@ export default function Configuration() {
                 disabled={saving || generating || !config}
                 onClick={generate}
               >
-                {generating ? "Generating…" : "Generate periods"}
+                {generating
+                  ? (hasPeriods ? "Re-generating…" : "Generating…")
+                  : (hasPeriods ? "Re-generate periods" : "Generate periods")}
               </button>
             </div>
+
+            {hasPeriods && (
+              <div className="callout">
+                Periods already exist. Change the schedule below and press{" "}
+                <strong>Re-generate periods</strong>: timings are updated in place, so existing
+                timetable entries stay attached. You will see a summary before anything changes.
+              </div>
+            )}
 
             <form className="form" onSubmit={saveConfig}>
               {/* Row 1: totals + default duration */}

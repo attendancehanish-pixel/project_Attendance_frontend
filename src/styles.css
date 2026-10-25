@@ -134,7 +134,7 @@ textarea{min-height:90px;resize:vertical}
 .switch-row.large strong{font-size:13px}
 .table-headline{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}
 .table-headline h3{margin:2px 0 0}
-.timetable-grid{display:grid;grid-template-columns:repeat(7,minmax(140px,1fr));border-top:1px solid var(--ui-line-soft);border-left:1px solid var(--ui-line-soft);overflow:auto}
+.timetable-grid{display:grid;grid-template-columns:repeat(7,minmax(160px,1fr));border-top:1px solid var(--ui-line-soft);border-left:1px solid var(--ui-line-soft);overflow:auto}
 .day-column{min-height:240px;border-right:1px solid var(--ui-line-soft);border-bottom:1px solid var(--ui-line-soft);background:var(--ui-surface)}
 .weekly-holiday-column{background:var(--ui-surface-3)}
 .day-header{padding:11px;border-bottom:1px solid var(--ui-line-soft);display:grid;gap:5px}
@@ -180,3 +180,17 @@ textarea{min-height:90px;resize:vertical}
 .timetable-mode-tabs{display:flex;gap:8px;margin-bottom:15px}
 @media(max-width:900px){.calendar-grid{grid-template-columns:repeat(4,minmax(130px,1fr))}}
 @media(max-width:600px){.calendar-grid{grid-template-columns:repeat(2,minmax(150px,1fr))}.calendar-weekday{display:none}.calendar-toolbar{align-items:flex-start;flex-direction:column}}
+
+/* Timetable: ready-made period boxes + inline editor */
+.slot-list{display:grid;gap:0;max-width:460px;border:1px solid var(--ui-line-soft);border-radius:8px;overflow:hidden}
+.slot-head{display:flex;justify-content:space-between;align-items:center;margin:8px 8px -2px;font-size:10px;color:var(--ui-muted)}
+.slot-empty{margin:8px;padding:9px;width:calc(100% - 16px);display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px dashed var(--ui-line-2);border-radius:8px;background:transparent;color:var(--ui-faint);font-size:10px;text-align:left;cursor:pointer}
+.slot-empty:hover:not(:disabled){border-color:var(--ui-line-hover);color:var(--ui-ink);background:var(--ui-surface-2)}
+.slot-empty:disabled{cursor:default;opacity:.65}
+.slot-editor{margin:8px;padding:9px;display:grid;gap:7px;border:1px solid var(--ui-line-strong);border-radius:8px;background:var(--ui-surface)}
+.slot-editor select{width:100%}
+.slot-check{display:flex;align-items:center;gap:6px;font-size:10px}
+.slot-check input{width:auto}
+.slot-editor-actions{display:flex;gap:6px;flex-wrap:wrap}
+.slot-editor-actions .button{padding:6px 10px}
+.slot-error{color:var(--ui-err-text);font-size:10px}

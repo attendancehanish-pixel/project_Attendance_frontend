@@ -47,6 +47,15 @@ const TimetableCell = ({ data, isMyPeriod = false }) => {
         )}
       </div>
 
+      {data.startTime && (
+        <div className="mt-2 flex items-center gap-1.5 text-[11px] text-slate-500">
+          <Clock3 size={12} />
+          <span>
+            {data.startTime} – {data.endTime}
+          </span>
+        </div>
+      )}
+
       {data.teacher && (
         <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-400">
           <UserRound size={13} />
@@ -134,6 +143,12 @@ const GridSkeleton = () => (
         <div key={i} className="h-16 rounded-lg bg-slate-800/60" />
       ))}
     </div>
+  </div>
+);
+
+const InfoBox = ({ children }) => (
+  <div className="mb-5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+    {children}
   </div>
 );
 
@@ -262,7 +277,11 @@ const StaffTimetable = () => {
   /* Derived                                                             */
   /* ------------------------------------------------------------------ */
 
-  const weekdays = myData?.weekdays || classData?.weekdays || [
+  // Each view uses its own weekdays/periods: the days a teacher works can
+  // differ from the days a class has lessons (Saturday, Sunday, ...).
+  const activeData = activeView === "class" ? classData : myData;
+
+  const weekdays = activeData?.weekdays || [
     "MONDAY",
     "TUESDAY",
     "WEDNESDAY",
@@ -270,19 +289,25 @@ const StaffTimetable = () => {
     "FRIDAY",
   ];
 
-  const weekdayLabels = myData?.weekdayLabels ||
-    classData?.weekdayLabels || {
-      MONDAY: "Monday",
-      TUESDAY: "Tuesday",
-      WEDNESDAY: "Wednesday",
-      THURSDAY: "Thursday",
-      FRIDAY: "Friday",
-    };
+  const weekdayLabels = {
+    MONDAY: "Monday",
+    TUESDAY: "Tuesday",
+    WEDNESDAY: "Wednesday",
+    THURSDAY: "Thursday",
+    FRIDAY: "Friday",
+    SATURDAY: "Saturday",
+    SUNDAY: "Sunday",
+    ...(activeData?.weekdayLabels || {}),
+  };
 
-  const periods = useMemo(
-    () => myData?.periods || classData?.periods || [],
-    [myData, classData]
-  );
+  const periods = useMemo(() => activeData?.periods || [], [activeData]);
+
+  const todayWeekday = activeData?.today || null;
+
+  const gridStyle = {
+    gridTemplateColumns: `90px repeat(${weekdays.length}, minmax(180px, 1fr))`,
+  };
+  const gridMinWidth = { minWidth: 90 + weekdays.length * 180 };
 
   const selectedClassName =
     classes.find((c) => c.id === selectedClass)?.name || "";
@@ -307,7 +332,7 @@ const StaffTimetable = () => {
               <div className="flex items-center gap-2 text-sm text-slate-400">
                 <CalendarDays size={16} />
                 <span>
-                  Academic Year {myData?.academicYear?.name || "—"}
+                  Academic Year {myData?.academicYear?.name || classData?.academicYear?.name || "—"}
                 </span>
               </div>
 
@@ -361,11 +386,20 @@ const StaffTimetable = () => {
         {/* ---------------------------------------------------------------- */}
         {activeView === "my" && (
           <section>
-            <div className="mb-5">
-              <h2 className="text-lg font-semibold">My Weekly Timetable</h2>
-              <p className="mt-1 text-sm text-slate-400">
-                Periods assigned to you across all classes.
-              </p>
+            <div className="mb-5 flex items-end justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold">My Weekly Timetable</h2>
+                <p className="mt-1 text-sm text-slate-400">
+                  Periods assigned to you across all classes.
+                </p>
+              </div>
+              <button
+                onClick={loadMyTimetable}
+                disabled={myLoading}
+                className="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800 disabled:opacity-50"
+              >
+                {myLoading ? "Refreshing…" : "Refresh"}
+              </button>
             </div>
 
             {myLoading && <GridSkeleton />}
@@ -375,6 +409,25 @@ const StaffTimetable = () => {
 
             {myData && !myLoading && !myError && (
               <>
+                {!myData.hasPeriods && (
+                  <InfoBox>
+                    The admin has not configured any periods for this academic year yet.
+                  </InfoBox>
+                )}
+                {myData.hasPeriods && !myData.hasAssignments && (
+                  <InfoBox>
+                    No subjects are assigned to you for {myData.academicYear?.name} yet, so your
+                    timetable is empty. Ask the admin to assign you to a class and subject under
+                    Staff Assignments.
+                  </InfoBox>
+                )}
+                {myData.hasAssignments && myData.summary.weeklyPeriods === 0 && (
+                  <InfoBox>
+                    You are assigned to subjects, but the admin has not placed them in the
+                    timetable yet.
+                  </InfoBox>
+                )}
+
                 <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
                   {[
                     { label: "Weekly periods", value: myData.summary.weeklyPeriods },
@@ -394,18 +447,25 @@ const StaffTimetable = () => {
 
                 <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
                   <div className="overflow-x-auto">
-                    <div className="min-w-[1050px]">
-                      <div className="grid grid-cols-[90px_repeat(5,minmax(180px,1fr))] border-b border-slate-800">
+                    <div style={gridMinWidth}>
+                      <div style={gridStyle} className="grid border-b border-slate-800">
                         <div className="flex items-center justify-center border-r border-slate-800 p-3 text-xs font-medium text-slate-500">
                           Period
                         </div>
                         {weekdays.map((day) => (
                           <div
                             key={day}
-                            className="border-r border-slate-800 p-3 last:border-r-0"
+                            className={`border-r border-slate-800 p-3 last:border-r-0 ${
+                              day === todayWeekday ? "bg-blue-500/10" : ""
+                            }`}
                           >
                             <p className="text-sm font-medium text-slate-200">
                               {weekdayLabels[day]}
+                              {day === todayWeekday && (
+                                <span className="ml-2 rounded bg-blue-500/20 px-1.5 py-0.5 text-[10px] text-blue-300">
+                                  Today
+                                </span>
+                              )}
                             </p>
                             <p className="mt-0.5 text-xs text-slate-500">
                               {Object.keys(myData.timetable[day] || {}).length}{" "}
@@ -418,7 +478,8 @@ const StaffTimetable = () => {
                       {periods.map((period) => (
                         <div
                           key={period.id}
-                          className="grid grid-cols-[90px_repeat(5,minmax(180px,1fr))] border-b border-slate-800 last:border-b-0"
+                          style={gridStyle}
+                          className="grid border-b border-slate-800 last:border-b-0"
                         >
                           <div className="border-r border-slate-800 p-3">
                             <p className="text-sm font-semibold text-slate-300">
@@ -466,6 +527,14 @@ const StaffTimetable = () => {
                 </p>
               </div>
 
+              <div className="flex w-full items-center gap-2 md:w-auto">
+              <button
+                onClick={() => loadClassTimetable(selectedClass)}
+                disabled={classLoading || !selectedClass}
+                className="rounded-md border border-slate-700 px-3 py-2 text-xs text-slate-300 hover:bg-slate-800 disabled:opacity-50"
+              >
+                Refresh
+              </button>
               <div className="relative w-full md:w-56">
                 <select
                   value={selectedClass}
@@ -483,6 +552,7 @@ const StaffTimetable = () => {
                   size={16}
                   className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
                 />
+              </div>
               </div>
             </div>
 
@@ -511,18 +581,25 @@ const StaffTimetable = () => {
             {classData && !classLoading && !classError && (
               <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
                 <div className="overflow-x-auto">
-                  <div className="min-w-[1050px]">
-                    <div className="grid grid-cols-[90px_repeat(5,minmax(180px,1fr))] border-b border-slate-800">
+                  <div style={gridMinWidth}>
+                    <div style={gridStyle} className="grid border-b border-slate-800">
                       <div className="flex items-center justify-center border-r border-slate-800 p-3 text-xs font-medium text-slate-500">
                         Period
                       </div>
                       {weekdays.map((day) => (
                         <div
                           key={day}
-                          className="border-r border-slate-800 p-3 last:border-r-0"
+                          className={`border-r border-slate-800 p-3 last:border-r-0 ${
+                            day === todayWeekday ? "bg-blue-500/10" : ""
+                          }`}
                         >
                           <p className="text-sm font-medium text-slate-200">
                             {weekdayLabels[day]}
+                            {day === todayWeekday && (
+                              <span className="ml-2 rounded bg-blue-500/20 px-1.5 py-0.5 text-[10px] text-blue-300">
+                                Today
+                              </span>
+                            )}
                           </p>
                         </div>
                       ))}
@@ -531,7 +608,8 @@ const StaffTimetable = () => {
                     {periods.map((period) => (
                       <div
                         key={period.id}
-                        className="grid grid-cols-[90px_repeat(5,minmax(180px,1fr))] border-b border-slate-800 last:border-b-0"
+                        style={gridStyle}
+                          className="grid border-b border-slate-800 last:border-b-0"
                       >
                         <div className="border-r border-slate-800 p-3">
                           <p className="text-sm font-semibold text-slate-300">
